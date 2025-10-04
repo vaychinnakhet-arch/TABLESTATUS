@@ -236,16 +236,72 @@
         .splash-nav-card h3 {
              text-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
+
+        /* QUICK UPDATE MODE STYLES */
+        #quick-update-floor-selector {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 20;
+        }
+        .quick-update-floor-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .quick-update-floor-btn.active {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: 700;
+        }
+        .room-card {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .room-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .room-card-progress-bar {
+            background-color: #d1d5db; /* gray-300 */
+        }
+        .room-card-progress-bar-inner {
+            transition: width 0.3s ease-in-out;
+        }
+        .quick-update-modal-body {
+            max-height: 80vh;
+        }
+        .task-status-btn-group button {
+             transition: all 0.2s ease-in-out;
+             border: 1px solid transparent;
+        }
+        .task-status-btn-group button.active {
+             font-weight: 600;
+             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+        .task-status-btn-group .not-started.active { background-color: #e5e7eb; color: #374151; border-color: #9ca3af; }
+        .task-status-btn-group .in-progress.active { background-color: #3b82f6; color: white; border-color: #1d4ed8; }
+        .task-status-btn-group .complete.active { background-color: #10b981; color: white; border-color: #047857; }
+        .task-status-btn-group button.saving {
+            pointer-events: none;
+            position: relative;
+        }
+        .task-status-btn-group button.saving .spinner {
+             position: absolute;
+             width: 16px;
+             height: 16px;
+             border-width: 2px;
+        }
     </style>
 </head>
 <body class="p-2 md:p-4">
 
     <!-- Splash Screen -->
     <div id="splash-screen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="w-full max-w-5xl mx-auto text-center">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-800 mb-2">Vay Chinnakhet</h1>
-            <p class="text-lg md:text-xl text-slate-600 mb-8 md:mb-12">ระบบติดตามความคืบหน้าโครงการ</p>
-
+        <div class="w-full max-w-5xl mx-auto">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-800 mb-2">Vay Chinnakhet</h1>
+                <p class="text-lg md:text-xl text-slate-600 mb-8 md:mb-12">ระบบติดตามความคืบหน้าโครงการ</p>
+            </div>
             <!-- Summary Dashboard -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 md:mb-12">
                 <!-- Overall Progress -->
@@ -272,20 +328,45 @@
             </div>
 
             <!-- Navigation -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div id="nav-residential" class="splash-nav-card cursor-pointer p-8 md:p-12 rounded-2xl shadow-xl text-white flex flex-col items-center justify-center" style="background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 51%, #43e97b 100%);">
                      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m-1 4h1m5-8h1m-1 4h1m-1 4h1M5 21v-3a2 2 0 012-2h10a2 2 0 012 2v3" /></svg>
-                    <h3 class="text-xl md:text-2xl font-bold">เข้าสู่ระบบติดตาม (ห้องพัก)</h3>
+                    <h3 class="text-xl md:text-2xl font-bold">ระบบติดตาม (ห้องพัก)</h3>
                 </div>
                 <div id="nav-common-area" class="splash-nav-card cursor-pointer p-8 md:p-12 rounded-2xl shadow-xl text-white flex flex-col items-center justify-center" style="background-image: linear-gradient(to right, #89f7fe 0%, #66a6ff 51%, #89f7fe 100%);">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>
-                    <h3 class="text-xl md:text-2xl font-bold">เข้าสู่ระบบติดตาม (ส่วนกลาง)</h3>
+                    <h3 class="text-xl md:text-2xl font-bold">ระบบติดตาม (ส่วนกลาง)</h3>
+                </div>
+                <div id="nav-quick-update" class="splash-nav-card cursor-pointer p-8 md:p-12 rounded-2xl shadow-xl text-white flex flex-col items-center justify-center" style="background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                    <h3 class="text-xl md:text-2xl font-bold">โหมดอัพเดทหน้างาน</h3>
                 </div>
             </div>
-             <p id="splash-loading-text" class="mt-8 text-slate-500">กำลังเชื่อมต่อฐานข้อมูล...</p>
+             <p id="splash-loading-text" class="mt-8 text-slate-500 text-center">กำลังเชื่อมต่อฐานข้อมูล...</p>
         </div>
     </div>
 
+    <!-- Quick Update Mode Container -->
+    <div id="quick-update-container" class="hidden">
+        <header class="bg-slate-800 text-white p-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                 <button id="quick-update-home-btn" class="p-2 rounded-full hover:bg-slate-700 transition-colors" title="กลับสู่หน้าหลัก">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                 </button>
+                <h1 class="text-xl md:text-2xl font-bold tracking-wide text-shadow-md">โหมดอัพเดทหน้างาน</h1>
+            </div>
+        </header>
+
+        <div id="quick-update-floor-selector" class="p-2 shadow-md mb-4 flex justify-center gap-2">
+            <!-- Floor buttons will be generated here -->
+        </div>
+
+        <main class="p-2 md:p-4">
+            <div id="quick-update-room-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+                <!-- Room cards will be generated here -->
+            </div>
+        </main>
+    </div>
 
     <!-- Main Application Container -->
     <div id="main-app-container" class="hidden">
@@ -428,6 +509,19 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Quick Update Modal -->
+        <div id="quick-update-modal" class="modal fixed inset-0 w-full h-full items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="quick-update-modal-title">
+             <div class="bg-white rounded-lg shadow-xl w-full max-w-lg flex flex-col">
+                 <div class="flex justify-between items-center p-4 border-b">
+                     <h2 id="quick-update-modal-title" class="text-xl font-bold">อัพเดทสถานะ: ห้อง </h2>
+                     <button id="close-quick-update-modal-btn" class="text-3xl text-gray-500 hover:text-gray-800">&times;</button>
+                 </div>
+                 <div id="quick-update-task-list" class="quick-update-modal-body p-4 overflow-y-auto space-y-3">
+                     <!-- Task list for quick update will be generated here -->
+                 </div>
+             </div>
+        </div>
 
         <!-- Report Generator & AI Modal -->
         <div id="reportModal" class="modal fixed inset-0 w-full h-full items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
@@ -528,6 +622,12 @@
                 wetWork: { name: 'WET WORK', reportName: 'WET WORK', reportEmoji: '💧', title: 'STATUS งาน WET WORK', type: 'inspection', tasks: [ { name: 'CM WW', color: 'bg-orange-400', textColor: 'text-white' }, { name: 'QC WW', color: 'bg-yellow-400', textColor: 'text-black' } ] },
                 endProduct: { name: 'END PRODUCT', reportName: 'END PRODUCT', reportEmoji: '✅', title: 'STATUS งาน END PRODUCT', type: 'inspection', tasks: [ { name: 'CM End', color: 'bg-rose-300', textColor: 'text-black' }, { name: 'QC End', color: 'bg-emerald-400', textColor: 'text-black' }, ] },
             };
+            
+            const quickUpdateTaskOrder = [
+                'texcaWall', 'topping', 'waterproofing', 'tiling', 'ceiling', 'skimAndPaint', 
+                'aluminum', 'door', 'laminate', 'furniture'
+            ];
+
 
             const commonAreaDefinitions = {
                 "staircase1": { locationName: "บันได ST1", tasks: [ { taskName: "ฉาบผนัง" }, { taskName: "เทปรับระดับ ขัดมัน" }, { taskName: "งานฉาบท้องบันได" }, { taskName: "สกิมทาสี ผนัง" }, { taskName: "ราวบันได" } ]},
@@ -550,6 +650,7 @@
             let realtimeChannel;
             let lastFocusedElement;
             let activeModal = null;
+            let currentQuickUpdateFloor = CONFIG.FLOORS[0];
 
 
             // --- DATA HANDLING (Supabase) ---
@@ -610,6 +711,8 @@
                             if(!document.getElementById('main-app-container').classList.contains('hidden')) {
                                 renderTable();
                                 highlightChanges(oldData, projectData);
+                            } else if (!document.getElementById('quick-update-container').classList.contains('hidden')) {
+                                renderQuickUpdateView(currentQuickUpdateFloor); // Re-render quick update view
                             }
                             renderSplashScreen();
                             showToast("ข้อมูลถูกอัพเดทโดยผู้ใช้อื่น", 2500);
@@ -780,6 +883,7 @@
             function enterAppView(view) {
                 document.getElementById('splash-screen').classList.add('hidden');
                 document.getElementById('main-app-container').classList.remove('hidden');
+                document.getElementById('quick-update-container').classList.add('hidden');
                 currentView = view;
                 
                 const resBtn = document.getElementById('view-residential-btn');
@@ -792,9 +896,17 @@
 
                 renderTable();
             }
+            
+            function enterQuickUpdateView() {
+                document.getElementById('splash-screen').classList.add('hidden');
+                document.getElementById('main-app-container').classList.add('hidden');
+                document.getElementById('quick-update-container').classList.remove('hidden');
+                renderQuickUpdateView(currentQuickUpdateFloor);
+            }
 
             function backToSplash() {
                 document.getElementById('main-app-container').classList.add('hidden');
+                document.getElementById('quick-update-container').classList.add('hidden');
                 document.getElementById('splash-screen').classList.remove('hidden');
                 renderSplashScreen(); // Re-render in case of updates
             }
@@ -829,6 +941,180 @@
                 }
                 updateUI();
             }
+            
+            // --- QUICK UPDATE MODE FUNCTIONS ---
+            function renderQuickUpdateView(floor) {
+                currentQuickUpdateFloor = floor;
+                // Render Floor Selector
+                const floorSelector = document.getElementById('quick-update-floor-selector');
+                floorSelector.innerHTML = CONFIG.FLOORS.map(f => `
+                    <button class="quick-update-floor-btn px-4 py-2 rounded-full font-semibold text-slate-600 ${f === floor ? 'active' : ''}" data-floor="${f}">
+                        ชั้น ${f}
+                    </button>
+                `).join('');
+
+                // Render Room Grid
+                renderRoomGrid(floor);
+            }
+            
+            function renderRoomGrid(floor) {
+                const roomGrid = document.getElementById('quick-update-room-grid');
+                const roomsOnThisFloor = (floor === 2) ? CONFIG.ROOMS_ON_FLOOR_2 : CONFIG.ROOMS_PER_FLOOR;
+                let gridHTML = '';
+                for (let room = 1; room <= roomsOnThisFloor; room++) {
+                    const overallProgress = calculateRoomOverallProgress(floor, room);
+                    const progressColor = overallProgress >= 100 ? 'bg-emerald-500' : 'bg-indigo-500';
+                    gridHTML += `
+                        <div class="room-card bg-white rounded-lg shadow p-3 flex flex-col items-center justify-center" data-floor="${floor}" data-room="${room}">
+                            <p class="font-bold text-lg text-slate-800">${floor}${String(room).padStart(2, '0')}</p>
+                            <p class="text-xs text-slate-500 mb-2">${overallProgress.toFixed(0)}% Complete</p>
+                            <div class="room-card-progress-bar w-full h-1.5 rounded-full">
+                                <div class="room-card-progress-bar-inner h-full rounded-full ${progressColor}" style="width: ${overallProgress}%;"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+                roomGrid.innerHTML = gridHTML;
+            }
+
+            function calculateRoomOverallProgress(floor, room) {
+                if (!projectData) return 0;
+                let totalProgress = 0;
+                let taskCount = 0;
+                
+                quickUpdateTaskOrder.forEach(catKey => {
+                    const catDef = taskDefinitions[catKey];
+                    const unitData = projectData[catKey]?.[floor]?.[room];
+                    if (!unitData) return;
+
+                    taskCount++;
+                    if (catDef.type === 'progress') {
+                        const taskProgress = (unitData.progress || 0) / catDef.tasks.length;
+                        const completedTasksProgress = (unitData.taskIndex || 0) * (100 / catDef.tasks.length);
+                        totalProgress += (taskProgress + completedTasksProgress);
+                    } else if (catDef.type === 'multi-progress') {
+                        let subTaskTotal = 0;
+                        catDef.tasks.forEach(task => {
+                            subTaskTotal += (unitData[`progress_${task.key}`] || 0);
+                        });
+                        totalProgress += (subTaskTotal / catDef.tasks.length);
+                    }
+                });
+                
+                return taskCount > 0 ? totalProgress / taskCount : 0;
+            }
+
+            function openQuickUpdateModal(floor, room) {
+                const modalTitle = document.getElementById('quick-update-modal-title');
+                modalTitle.textContent = `อัพเดทสถานะ: ห้อง ${floor}${String(room).padStart(2, '0')}`;
+                renderQuickUpdateTaskList(floor, room);
+                openModal('quick-update-modal');
+            }
+
+            function getTaskStatus(unitData, catDef) {
+                 if (!unitData) return 'not_started';
+
+                 let totalProgress = 0;
+                 let subTaskCount = 0;
+
+                 if (catDef.type === 'progress') {
+                     subTaskCount = catDef.tasks.length;
+                     const taskProgress = (unitData.progress || 0);
+                     const completedTasksProgress = (unitData.taskIndex || 0) * 100;
+                     totalProgress = (taskProgress + completedTasksProgress) / subTaskCount;
+                 } else if (catDef.type === 'multi-progress') {
+                     subTaskCount = catDef.tasks.length;
+                     catDef.tasks.forEach(task => {
+                         totalProgress += (unitData[`progress_${task.key}`] || 0);
+                     });
+                     totalProgress = totalProgress / subTaskCount;
+                 }
+
+                 if (totalProgress >= 100) return 'complete';
+                 if (totalProgress > 0) return 'in_progress';
+                 return 'not_started';
+            }
+
+            function renderQuickUpdateTaskList(floor, room) {
+                const taskListContainer = document.getElementById('quick-update-task-list');
+                let listHTML = '';
+
+                quickUpdateTaskOrder.forEach(catKey => {
+                    const catDef = taskDefinitions[catKey];
+                    const unitData = projectData[catKey]?.[floor]?.[room];
+                    const currentStatus = getTaskStatus(unitData, catDef);
+                    
+                    listHTML += `
+                        <div class="border rounded-lg p-3 bg-slate-50">
+                            <p class="font-semibold text-slate-700 mb-2">${catDef.name}</p>
+                            <div class="task-status-btn-group grid grid-cols-3 gap-2 text-sm">
+                                <button class="not-started px-3 py-2 rounded-md bg-gray-200 text-gray-700 ${currentStatus === 'not_started' ? 'active' : ''}" data-floor="${floor}" data-room="${room}" data-catkey="${catKey}" data-status="not_started">
+                                    ยังไม่เริ่ม
+                                </button>
+                                <button class="in-progress px-3 py-2 rounded-md bg-blue-100 text-blue-800 ${currentStatus === 'in_progress' ? 'active' : ''}" data-floor="${floor}" data-room="${room}" data-catkey="${catKey}" data-status="in_progress">
+                                    กำลังทำ
+                                </button>
+                                <button class="complete px-3 py-2 rounded-md bg-green-100 text-green-800 ${currentStatus === 'complete' ? 'active' : ''}" data-floor="${floor}" data-room="${room}" data-catkey="${catKey}" data-status="complete">
+                                    เสร็จแล้ว
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                taskListContainer.innerHTML = listHTML;
+            }
+            
+            async function handleQuickUpdateStatusChange(button) {
+                const { floor, room, catkey, status } = button.dataset;
+                const catDef = taskDefinitions[catkey];
+                
+                button.classList.add('saving');
+                button.innerHTML = '<div class="spinner mx-auto"></div>';
+
+                const updatedData = JSON.parse(JSON.stringify(projectData));
+                const unitData = updatedData[catkey][floor][room];
+
+                if (status === 'not_started') {
+                    if (catDef.type === 'progress') {
+                        unitData.taskIndex = 0;
+                        unitData.progress = 0;
+                    } else { // multi-progress
+                        catDef.tasks.forEach(task => unitData[`progress_${task.key}`] = 0);
+                    }
+                } else if (status === 'in_progress') {
+                     if (catDef.type === 'progress') {
+                        unitData.taskIndex = 0;
+                        unitData.progress = 50;
+                    } else { // multi-progress
+                        catDef.tasks.forEach(task => unitData[`progress_${task.key}`] = 50);
+                    }
+                } else if (status === 'complete') {
+                    if (catDef.type === 'progress') {
+                        unitData.taskIndex = catDef.tasks.length - 1;
+                        unitData.progress = 100;
+                    } else { // multi-progress
+                        catDef.tasks.forEach(task => unitData[`progress_${task.key}`] = 100);
+                    }
+                }
+                
+                try {
+                    const { error } = await supabaseClient
+                        .from(CONFIG.DB_TABLE_NAME)
+                        .update({ data: updatedData })
+                        .eq('id', CONFIG.DB_ROW_ID);
+
+                    if (error) throw error;
+                    showToast(`${catDef.name} ห้อง ${floor}${String(room).padStart(2, '0')} อัพเดทแล้ว`);
+                    // The realtime listener will handle the UI update
+                } catch (error) {
+                    console.error("Error saving quick update:", error);
+                    showNotificationModal("เกิดข้อผิดพลาด", "ไม่สามารถบันทึกข้อมูลได้");
+                    // Revert UI on failure
+                    renderQuickUpdateTaskList(floor, room);
+                }
+            }
+
+            // --- END OF QUICK UPDATE FUNCTIONS ---
 
             function renderCommonAreaTable() {
                 const mainTable = document.getElementById('main-table');
@@ -2699,9 +2985,11 @@
                 // Splash Screen Nav
                 document.getElementById('nav-residential').addEventListener('click', () => enterAppView('residential'));
                 document.getElementById('nav-common-area').addEventListener('click', () => enterAppView('common'));
+                document.getElementById('nav-quick-update').addEventListener('click', enterQuickUpdateView);
                 
                 // Main App Nav
                 document.getElementById('home-btn').addEventListener('click', backToSplash);
+                document.getElementById('quick-update-home-btn').addEventListener('click', backToSplash);
 
                 document.getElementById('closeModalBtn').addEventListener('click', () => closeModal('updateModal'));
                 document.getElementById('saveProgressBtn').addEventListener('click', saveProgress);
@@ -2769,6 +3057,8 @@
                 document.getElementById('openCommonAreaReportModalBtn').addEventListener('click', e => setupAndOpenCommonAreaReportModal(e.currentTarget));
                 document.getElementById('closeReportModalBtn').addEventListener('click', () => closeModal('reportModal'));
                 document.getElementById('notificationOkBtn').addEventListener('click', () => closeModal('notificationModal'));
+                document.getElementById('close-quick-update-modal-btn').addEventListener('click', () => closeModal('quick-update-modal'));
+
                 
                 document.getElementById('task-category').addEventListener('change', (e) => {
                     currentCategory = e.target.value;
@@ -2816,6 +3106,30 @@
                     renderTable();
                 });
                 
+                // Event Delegation for dynamic elements
+                document.addEventListener('click', (e) => {
+                    // Quick Update: Floor Selector
+                    const floorBtn = e.target.closest('.quick-update-floor-btn');
+                    if (floorBtn) {
+                        const floor = parseInt(floorBtn.dataset.floor, 10);
+                        renderQuickUpdateView(floor);
+                    }
+
+                    // Quick Update: Room Card
+                    const roomCard = e.target.closest('.room-card');
+                    if (roomCard) {
+                        const { floor, room } = roomCard.dataset;
+                        openQuickUpdateModal(parseInt(floor, 10), parseInt(room, 10));
+                    }
+
+                    // Quick Update: Status Buttons in Modal
+                    const statusBtn = e.target.closest('.task-status-btn-group button');
+                    if (statusBtn && !statusBtn.classList.contains('active')) {
+                        handleQuickUpdateStatusChange(statusBtn);
+                    }
+                });
+
+
                 const mainTable = document.getElementById('main-table');
                 mainTable.addEventListener('mousedown', (e) => {
                     if (currentView === 'qc_summary') return;
