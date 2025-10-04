@@ -319,10 +319,16 @@
 
              <div id="modal-inspection-view" class="hidden">
                  <div class="mb-4">
+                     <label class="flex items-center">
+                         <input type="checkbox" id="in-inspection-checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                         <span class="ml-2 text-sm text-gray-700">อยู่ระหว่างการตรวจสอบ</span>
+                     </label>
+                 </div>
+                 <div class="mb-4">
                          <label for="inspection-stage-select" class="block text-sm font-medium text-gray-700">ขั้นตอน:</label>
                          <select id="inspection-stage-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-                               <option value="0">CM</option>
-                               <option value="1">QC</option>
+                               <option value="qc">QC</option>
+                               <option value="qc-cm">QC-CM</option>
                          </select>
                  </div>
                  <div class="mb-4">
@@ -543,6 +549,7 @@
                                  unitData.qcScore = 0;
                                  unitData.cmHasMajorDefect = false;
                                  unitData.qcHasMajorDefect = false;
+                                 unitData.inInspection = false;
                              } else if (catDef.type === 'multi-progress') {
                                  catDef.tasks.forEach(task => {
                                      unitData[`progress_${task.key}`] = 0;
@@ -759,12 +766,17 @@
                             let styleClasses = 'bg-white text-black';
                             let cellText = '0';
                             if (isInspection) {
-                                let scoreToShow = 0, defectToShow = false, stageLabel = '';
-                                if (unitData.qcScore > 0) { scoreToShow = unitData.qcScore; defectToShow = unitData.qcHasMajorDefect; stageLabel = 'QC: '; } 
-                                else if (unitData.cmScore > 0) { scoreToShow = unitData.cmScore; defectToShow = unitData.cmHasMajorDefect; stageLabel = 'CM: '; }
-                                if (scoreToShow > 0) styleClasses = scoreToShow >= 85 ? 'bg-teal-500 text-white' : 'bg-rose-500 text-white';
-                                cellText = scoreToShow > 0 ? `${stageLabel}${Number.isInteger(scoreToShow) ? scoreToShow : scoreToShow.toFixed(2)}` : '0';
-                                if (defectToShow) cellText += '!';
+                                if (unitData.inInspection) {
+                                    styleClasses = 'bg-yellow-400 text-black';
+                                    cellText = 'ตรวจสอบ';
+                                } else {
+                                    let scoreToShow = 0, defectToShow = false, stageLabel = '';
+                                    if (unitData.qcScore > 0) { scoreToShow = unitData.qcScore; defectToShow = unitData.qcHasMajorDefect; stageLabel = 'QC: '; } 
+                                    else if (unitData.cmScore > 0) { scoreToShow = unitData.cmScore; defectToShow = unitData.cmHasMajorDefect; stageLabel = 'CM: '; }
+                                    if (scoreToShow > 0) styleClasses = scoreToShow >= 85 ? 'bg-teal-500 text-white' : 'bg-rose-500 text-white';
+                                    cellText = scoreToShow > 0 ? `${stageLabel}${Number.isInteger(scoreToShow) ? scoreToShow : scoreToShow.toFixed(2)}` : '0';
+                                    if (defectToShow) cellText += '!';
+                                }
                             } else if (isMultiProgress) {
                                  let totalProgress = 0;
                                  const activeTasks = [];
@@ -972,6 +984,7 @@
                     });
                     legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-teal-500"></div><span>เสร็จสมบูรณ์ (100%)</span></div>`;
                 } else if (categoryDef.type === 'inspection') {
+                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-yellow-400"></div><span>อยู่ระหว่างตรวจสอบ</span></div>`;
                     legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-teal-500"></div><span>ผ่าน (>= 85)</span></div>`;
                     legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-rose-500"></div><span>ไม่ผ่าน (< 85)</span></div>`;
                     legend.innerHTML += `<div class="flex items-center gap-2"><span class="font-bold text-lg">!</span><span>พบ Major Defect</span></div>`;
@@ -1095,20 +1108,39 @@
 
                 if (categoryDef.type === 'inspection') {
                     document.getElementById('modal-inspection-view').classList.remove('hidden');
+                    const inInspectionCheckbox = document.getElementById('in-inspection-checkbox');
                     const stageSelect = document.getElementById('inspection-stage-select');
                     const scoreInput = document.getElementById('score-input');
                     const defectCheckbox = document.getElementById('major-defect-checkbox');
                     const isMultiSelect = selectedCells.size > 1;
-                    const defaultStage = isMultiSelect ? 0 : (unitData.qcScore > 0 ? 1 : (unitData.cmScore > 0 ? 0 : 0));
-                    stageSelect.value = defaultStage;
+
+                    const toggleInspectionFields = () => {
+                        const isDisabled = inInspectionCheckbox.checked;
+                        stageSelect.disabled = isDisabled;
+                        scoreInput.disabled = isDisabled;
+                        defectCheckbox.disabled = isDisabled;
+                    };
+                    inInspectionCheckbox.removeEventListener('change', toggleInspectionFields);
+                    inInspectionCheckbox.addEventListener('change', toggleInspectionFields);
+                    
+                    inInspectionCheckbox.checked = isMultiSelect ? false : (unitData.inInspection || false);
+                    toggleInspectionFields();
+                    
+                    stageSelect.value = isMultiSelect ? 'qc' : 'qc';
 
                     const updateInspectionUI = () => {
-                        const stage = parseInt(stageSelect.value, 10);
-                        scoreInput.value = isMultiSelect ? '' : (stage === 0 ? unitData.cmScore : unitData.qcScore);
-                        defectCheckbox.checked = isMultiSelect ? false : (stage === 0 ? unitData.cmHasMajorDefect : unitData.qcHasMajorDefect);
+                        const stage = stageSelect.value;
+                        if (stage === 'qc') {
+                            scoreInput.value = isMultiSelect ? '' : (unitData.qcScore || '');
+                            defectCheckbox.checked = isMultiSelect ? false : (unitData.qcHasMajorDefect || false);
+                        } else { // qc-cm
+                            scoreInput.value = isMultiSelect ? '' : (unitData.qcScore || '');
+                            defectCheckbox.checked = isMultiSelect ? false : (unitData.qcHasMajorDefect || false);
+                        }
                     };
                     updateInspectionUI();
                     stageSelect.onchange = updateInspectionUI;
+
                 } else if (categoryDef.type === 'multi-progress') {
                     const view = document.getElementById('modal-multi-progress-view');
                     const isMultiSelect = selectedCells.size > 1;
@@ -1219,25 +1251,39 @@
             function applyResidentialProgressUpdates(data) {
                 const categoryDef = taskDefinitions[currentCategory];
                 if (categoryDef.type === 'inspection') {
-                    const stage = parseInt(document.getElementById('inspection-stage-select').value, 10);
-                    const newScoreStr = document.getElementById('score-input').value;
-                    if (newScoreStr === '') return;
-                    const newScore = parseFloat(newScoreStr);
-                    if (isNaN(newScore) || newScore < 0 || newScore > 100) return;
-                    const hasDefect = document.getElementById('major-defect-checkbox').checked;
+                    const inInspection = document.getElementById('in-inspection-checkbox').checked;
 
                     selectedCells.forEach(cell => {
                         const { floor, room } = cell.dataset;
                         const unitData = data[currentCategory][floor][room];
-                        if (stage === 0) {
-                            unitData.cmScore = newScore;
-                            unitData.cmHasMajorDefect = hasDefect;
+                        
+                        if (inInspection) {
+                            unitData.inInspection = true;
+                            unitData.cmScore = 0;
+                            unitData.qcScore = 0;
+                            unitData.cmHasMajorDefect = false;
+                            unitData.qcHasMajorDefect = false;
                         } else {
-                            unitData.qcScore = newScore;
-                            unitData.qcHasMajorDefect = hasDefect;
-                            if (unitData.cmScore === 0) {
-                                unitData.cmScore = 100;
-                                unitData.cmHasMajorDefect = false;
+                            unitData.inInspection = false;
+                            const stage = document.getElementById('inspection-stage-select').value;
+                            const newScoreStr = document.getElementById('score-input').value;
+                            if (newScoreStr === '') return;
+                            const newScore = parseFloat(newScoreStr);
+                            if (isNaN(newScore) || newScore < 0 || newScore > 100) return;
+                            const hasDefect = document.getElementById('major-defect-checkbox').checked;
+
+                            if (stage === 'qc') {
+                                unitData.qcScore = newScore;
+                                unitData.qcHasMajorDefect = hasDefect;
+                                if (unitData.cmScore === 0) {
+                                    unitData.cmScore = 100;
+                                    unitData.cmHasMajorDefect = false;
+                                }
+                            } else { // qc-cm
+                                unitData.cmScore = newScore;
+                                unitData.cmHasMajorDefect = hasDefect;
+                                unitData.qcScore = newScore;
+                                unitData.qcHasMajorDefect = hasDefect;
                             }
                         }
                     });
