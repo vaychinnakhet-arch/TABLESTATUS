@@ -1281,8 +1281,19 @@
                                     cellText = 'ตรวจสอบ';
                                 } else {
                                     let scoreToShow = 0, defectToShow = false, stageLabel = '';
-                                    if (unitData.qcScore > 0) { scoreToShow = unitData.qcScore; defectToShow = unitData.qcHasMajorDefect; stageLabel = 'QC: '; } 
-                                    else if (unitData.cmScore > 0) { scoreToShow = unitData.cmScore; defectToShow = unitData.cmHasMajorDefect; stageLabel = 'CM: '; }
+                                    if (unitData.qcScore > 0 && unitData.qcScore === unitData.cmScore) {
+                                        scoreToShow = unitData.qcScore;
+                                        defectToShow = unitData.qcHasMajorDefect;
+                                        stageLabel = 'QC-CM: ';
+                                    } else if (unitData.qcScore > 0) {
+                                        scoreToShow = unitData.qcScore;
+                                        defectToShow = unitData.qcHasMajorDefect;
+                                        stageLabel = 'QC: ';
+                                    } else if (unitData.cmScore > 0) {
+                                        scoreToShow = unitData.cmScore;
+                                        defectToShow = unitData.cmHasMajorDefect;
+                                        stageLabel = 'CM: ';
+                                    }
                                     if (scoreToShow > 0) styleClasses = scoreToShow >= 85 ? 'bg-teal-500 text-white' : 'bg-rose-500 text-white';
                                     cellText = scoreToShow > 0 ? `${stageLabel}${Number.isInteger(scoreToShow) ? scoreToShow : scoreToShow.toFixed(2)}` : '0';
                                     if (defectToShow) cellText += '!';
@@ -3106,23 +3117,31 @@
                     renderTable();
                 });
                 
-                // Event Delegation for dynamic elements
-                document.addEventListener('click', (e) => {
-                    // Quick Update: Floor Selector
+                // Event Delegation for Quick Update Mode
+                const quickUpdateContainer = document.getElementById('quick-update-container');
+                const quickUpdateModal = document.getElementById('quick-update-modal');
+
+                quickUpdateContainer.addEventListener('click', (e) => {
+                    // Floor Selector
                     const floorBtn = e.target.closest('.quick-update-floor-btn');
                     if (floorBtn) {
                         const floor = parseInt(floorBtn.dataset.floor, 10);
-                        renderQuickUpdateView(floor);
+                        if (!floorBtn.classList.contains('active')) {
+                            renderQuickUpdateView(floor);
+                        }
+                        return;
                     }
 
-                    // Quick Update: Room Card
+                    // Room Card
                     const roomCard = e.target.closest('.room-card');
                     if (roomCard) {
                         const { floor, room } = roomCard.dataset;
                         openQuickUpdateModal(parseInt(floor, 10), parseInt(room, 10));
                     }
+                });
 
-                    // Quick Update: Status Buttons in Modal
+                quickUpdateModal.addEventListener('click', (e) => {
+                    // Status Buttons in Modal
                     const statusBtn = e.target.closest('.task-status-btn-group button');
                     if (statusBtn && !statusBtn.classList.contains('active')) {
                         handleQuickUpdateStatusChange(statusBtn);
