@@ -37,8 +37,7 @@
             padding: 0 !important;
             margin: 0 !important;
         }
-        .is-line-capturing #capture-area, 
-        .is-line-capturing #batch-capture-content {
+        .is-line-capturing #capture-area {
             width: 1200px !important; /* Fixed width for consistent capture */
             min-width: 1200px !important;
             display: block;
@@ -55,12 +54,15 @@
         }
         /* Ensure header text is visible during capture */
         .is-line-capturing header {
-            justify-content: center; 
+            justify-content: space-between; 
             padding-left: 20px;
             padding-right: 20px;
         }
         .is-line-capturing #status-title {
             font-size: 2rem;
+        }
+        .is-line-capturing #update-date-container {
+            display: block !important;
         }
 
         .table-cell {
@@ -398,7 +400,7 @@
                 <div class="flex-grow text-center">
                     <p class="text-2xl md:text-3xl font-extrabold tracking-wider text-white drop-shadow-md" id="status-title">STATUS</p>
                 </div>
-                <div class="w-auto text-right">
+                <div class="w-auto text-right" id="update-date-container">
                      <div class="inline-block bg-slate-800 px-3 py-1 rounded-lg border border-slate-700">
                          <p class="text-xs text-slate-400 uppercase">Last Update</p>
                          <p id="update-date" class="text-sm font-medium text-emerald-400"></p>
@@ -421,10 +423,10 @@
         
         <!-- Unified Modern Control Bar (Fixed Bottom or Floating) -->
         <div id="control-toolbar-container" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-5xl px-4 z-40">
-            <div class="glass-panel rounded-2xl p-2 md:p-3 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-6">
+            <div class="glass-panel rounded-2xl p-2 md:p-3 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-6 flex-wrap">
                 
                 <!-- View Controls & Task Selector Group -->
-                <div class="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
+                <div class="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto flex-wrap justify-center md:justify-start">
                     <!-- View Toggle -->
                     <div id="view-toggle" class="bg-slate-100 p-1 rounded-xl flex w-full md:w-auto shadow-inner">
                         <button id="view-residential-btn" class="view-toggle-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-xs md:text-sm active">ห้องพัก</button>
@@ -440,7 +442,7 @@
                     </div>
                      
                      <!-- Tiling Toggle (Hidden by default) -->
-                    <div id="tiling-view-toggle" class="bg-slate-100 p-1 rounded-xl hidden shadow-inner">
+                    <div id="tiling-view-toggle" class="bg-slate-100 p-1 rounded-xl hidden flex items-center shadow-inner">
                         <button id="view-tiling-summary-btn" class="view-toggle-btn px-3 py-2 rounded-lg text-xs active">สรุป</button>
                         <button id="view-tiling-detailed-btn" class="view-toggle-btn px-3 py-2 rounded-lg text-xs">ละเอียด</button>
                     </div>
@@ -456,9 +458,7 @@
                         <span class="text-sm">แคปเจอร์</span>
                     </button>
 
-                    <button id="openBatchCaptureBtn" class="action-btn-modern w-9 h-9 bg-indigo-100 text-indigo-600 rounded-full hover:bg-indigo-200 border border-indigo-200" title="แคปเจอร์หลายงาน">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                    </button>
+                    <!-- Removed Batch Capture Button to clean up interface as requested -->
                     
                     <button id="openReportModalBtn" class="action-btn-modern px-4 py-2 bg-white text-slate-700 rounded-xl border border-slate-200 hover:bg-slate-50 shadow-sm">
                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -489,11 +489,6 @@
             </div>
         </div>
         
-        <!-- Dummy container for batch capture -->
-        <div id="batch-capture-container" class="fixed top-0 left-0 bg-white z-[-1] opacity-0 pointer-events-none overflow-hidden">
-            <div id="batch-capture-content" class="bg-white p-8"></div>
-        </div>
-
         <!-- Update Modal -->
         <div id="updateModal" class="modal fixed inset-0 w-full h-full items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <div class="bg-white rounded-2xl shadow-2xl p-6 w-11/12 md:w-1/3 border border-slate-100 transform transition-all scale-100">
@@ -569,34 +564,6 @@
                 <div class="flex justify-end gap-3 mt-6 pt-4 border-t">
                     <button id="closeModalBtn" class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 font-medium transition-colors">ยกเลิก</button>
                     <button id="saveProgressBtn" class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 font-medium shadow-md shadow-indigo-200 transition-colors">บันทึก</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Batch Capture Modal -->
-        <div id="batchCaptureModal" class="modal fixed inset-0 w-full h-full items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="batch-capture-title">
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-slate-200">
-                <div class="flex justify-between items-center p-5 border-b bg-slate-50 rounded-t-2xl">
-                    <h2 id="batch-capture-title" class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        แคปเจอร์หลายงาน
-                    </h2>
-                    <button id="closeBatchCaptureModalBtn" class="text-slate-400 hover:text-slate-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                </div>
-                <div class="p-6">
-                     <p class="text-sm text-slate-500 mb-4">เลือกงานที่ต้องการรวมในภาพแคปเจอร์:</p>
-                     <div class="flex justify-end gap-2 mb-2">
-                         <button id="batchSelectAllBtn" class="text-xs text-indigo-600 font-medium">เลือกทั้งหมด</button>
-                         <button id="batchDeselectAllBtn" class="text-xs text-slate-500 font-medium">ล้าง</button>
-                     </div>
-                     <div id="batch-capture-list" class="space-y-2 max-h-60 overflow-y-auto border rounded-xl p-2 bg-slate-50">
-                         <!-- JS Populated -->
-                     </div>
-                     <button id="startBatchCaptureBtn" class="w-full mt-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white font-bold rounded-xl shadow-lg hover:shadow-indigo-500/40 transition-all">
-                         สร้างภาพแคปเจอร์
-                     </button>
                 </div>
             </div>
         </div>
@@ -1230,8 +1197,9 @@
                 document.getElementById('legend').style.display = isCommonView ? 'none' : 'flex';
                 document.getElementById('openReportModalBtn').style.display = isCommonView ? 'none' : 'inline-flex';
                 document.getElementById('openCommonAreaReportModalBtn').style.display = isCommonView ? 'inline-flex' : 'none';
-                document.getElementById('openBatchCaptureBtn').style.display = isCommonView || isQCSummaryView ? 'none' : 'inline-flex';
-
+                
+                // Removed Batch Capture logic reference from UI update as button is removed
+                
                 let title = '';
                 if (isCommonView) {
                     title = 'STATUS งานพื้นที่ส่วนกลาง';
@@ -1245,10 +1213,12 @@
                 const tilingToggle = document.getElementById('tiling-view-toggle');
                 if (categoryDef && categoryDef.hasDetailedView && !isCommonView && !isQCSummaryView) {
                     tilingToggle.classList.remove('hidden');
+                    tilingToggle.classList.add('flex'); // Ensure it displays as flex
                     document.getElementById('view-tiling-summary-btn').classList.toggle('active', currentDetailedView === 'summary');
                     document.getElementById('view-tiling-detailed-btn').classList.toggle('active', currentDetailedView === 'detailed');
                 } else {
                     tilingToggle.classList.add('hidden');
+                    tilingToggle.classList.remove('flex');
                 }
 
                 document.getElementById('update-date').textContent = new Date().toLocaleDateString('th-TH', {
@@ -1515,101 +1485,6 @@
                 }, 300);
             }
 
-            function openBatchCaptureModal() {
-                 const listContainer = document.getElementById('batch-capture-list');
-                 listContainer.innerHTML = '';
-                 Object.keys(taskDefinitions).forEach(catKey => {
-                     const catDef = taskDefinitions[catKey];
-                     const item = document.createElement('div');
-                     item.className = 'flex items-center p-3 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer';
-                     item.innerHTML = `
-                         <input type="checkbox" id="batch-cat-${catKey}" value="${catKey}" class="w-5 h-5 rounded text-indigo-600 focus:ring-indigo-500 border-gray-300 cursor-pointer">
-                         <label for="batch-cat-${catKey}" class="ml-3 flex-grow cursor-pointer text-sm font-medium text-slate-700">${catDef.name}</label>
-                     `;
-                     listContainer.appendChild(item);
-                 });
-                 openModal('batchCaptureModal');
-            }
-
-            function executeBatchCapture() {
-                const selectedCats = Array.from(document.querySelectorAll('#batch-capture-list input:checked')).map(cb => cb.value);
-                if (selectedCats.length === 0) {
-                    showToast("กรุณาเลือกงานอย่างน้อย 1 รายการ");
-                    return;
-                }
-
-                const captureBtn = document.getElementById('startBatchCaptureBtn');
-                const originalText = captureBtn.textContent;
-                captureBtn.textContent = 'กำลังสร้างภาพ...';
-                captureBtn.disabled = true;
-
-                const contentContainer = document.getElementById('batch-capture-content');
-                contentContainer.innerHTML = ''; // Clear previous content
-                
-                // Generate content for each selected category
-                // We clone the header structure for consistent look
-                const headerClone = document.querySelector('header').cloneNode(true);
-                // Remove buttons from clone
-                const homeBtnContainer = headerClone.querySelector('#home-btn-container');
-                if(homeBtnContainer) homeBtnContainer.style.visibility = 'hidden'; 
-                
-                // Update date in header
-                const dateEl = headerClone.querySelector('#update-date');
-                if(dateEl) dateEl.textContent = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-                
-                // Append Header once at the top
-                contentContainer.appendChild(headerClone);
-                
-                selectedCats.forEach(catKey => {
-                     const catDef = taskDefinitions[catKey];
-                     const sectionTitle = document.createElement('h2');
-                     sectionTitle.className = 'text-2xl font-bold text-slate-800 mt-8 mb-4 border-l-4 border-indigo-500 pl-4';
-                     sectionTitle.textContent = catDef.title;
-                     contentContainer.appendChild(sectionTitle);
-                     
-                     const tableWrapper = document.createElement('div');
-                     tableWrapper.className = 'overflow-hidden border rounded-lg shadow-sm mb-8';
-                     const table = document.createElement('table');
-                     table.className = 'w-full border-collapse text-center text-sm';
-                     table.innerHTML = generateResidentialTableHTML(catKey); // Use helper to generate HTML string
-                     tableWrapper.appendChild(table);
-                     contentContainer.appendChild(tableWrapper);
-                });
-
-                // Add Legend at the bottom
-                const legendClone = document.getElementById('legend').cloneNode(true);
-                contentContainer.appendChild(legendClone);
-
-                document.body.classList.add('is-line-capturing');
-                const batchContainer = document.getElementById('batch-capture-container');
-                
-                // Wait for DOM update
-                setTimeout(() => {
-                    html2canvas(batchContainer, {
-                        scale: 2, // slightly lower scale for very long images to avoid crash
-                        useCORS: true,
-                        backgroundColor: '#ffffff',
-                        width: 1200,
-                        windowWidth: 1200
-                    }).then(canvas => {
-                        const link = document.createElement('a');
-                        link.download = `batch-status-${Date.now()}.png`;
-                        link.href = canvas.toDataURL('image/png');
-                        link.click();
-                        showToast("สร้างภาพรวมสำเร็จ");
-                        closeModal('batchCaptureModal');
-                    }).catch(err => {
-                        console.error(err);
-                        showNotificationModal("เกิดข้อผิดพลาด", "ไม่สามารถสร้างภาพได้");
-                    }).finally(() => {
-                        document.body.classList.remove('is-line-capturing');
-                        captureBtn.textContent = originalText;
-                        captureBtn.disabled = false;
-                        contentContainer.innerHTML = ''; // Cleanup to save memory
-                    });
-                }, 500);
-            }
-            
              function setupAndOpenReportModal(triggerElement) { renderReportUI(); openModal('reportModal', triggerElement); }
              function renderReportUI() { 
                 const reportContentArea = document.getElementById('report-content-area');
@@ -1798,7 +1673,7 @@
                 });
                 document.getElementById('notificationOkBtn').addEventListener('click', () => closeModal('notificationModal'));
                 document.getElementById('closeReportModalBtn').addEventListener('click', () => closeModal('reportModal'));
-                document.getElementById('closeBatchCaptureModalBtn').addEventListener('click', () => closeModal('batchCaptureModal'));
+                // document.getElementById('closeBatchCaptureModalBtn').addEventListener('click', () => closeModal('batchCaptureModal')); // Removed
 
                 // Control Bar
                 document.getElementById('view-residential-btn').addEventListener('click', () => enterAppView('residential'));
@@ -1821,7 +1696,7 @@
 
                 // Actions
                 document.getElementById('captureBtn').addEventListener('click', captureForLine);
-                document.getElementById('openBatchCaptureBtn').addEventListener('click', openBatchCaptureModal);
+                // document.getElementById('openBatchCaptureBtn').addEventListener('click', openBatchCaptureModal); // Removed
                 document.getElementById('exportDataBtn').addEventListener('click', exportData);
                 document.getElementById('import-file').addEventListener('change', importData);
                 document.getElementById('clearDataBtn').addEventListener('click', () => {
@@ -1836,14 +1711,10 @@
                     });
                 });
 
-                // Batch Capture Interactions
-                document.getElementById('batchSelectAllBtn').addEventListener('click', () => {
-                    document.querySelectorAll('#batch-capture-list input[type="checkbox"]').forEach(cb => cb.checked = true);
-                });
-                document.getElementById('batchDeselectAllBtn').addEventListener('click', () => {
-                     document.querySelectorAll('#batch-capture-list input[type="checkbox"]').forEach(cb => cb.checked = false);
-                });
-                document.getElementById('startBatchCaptureBtn').addEventListener('click', executeBatchCapture);
+                // Batch Capture Interactions REMOVED
+                // document.getElementById('batchSelectAllBtn').addEventListener('click', () => { ... });
+                // document.getElementById('batchDeselectAllBtn').addEventListener('click', () => { ... });
+                // document.getElementById('startBatchCaptureBtn').addEventListener('click', executeBatchCapture);
 
                 document.getElementById('openReportModalBtn').addEventListener('click', function() { setupAndOpenReportModal(this); });
                 document.getElementById('openCommonAreaReportModalBtn').addEventListener('click', function() { setupAndOpenCommonAreaReportModal(this); });
@@ -1896,4 +1767,3 @@
     </script>
 </body>
 </html>
-    
