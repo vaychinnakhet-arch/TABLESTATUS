@@ -560,20 +560,26 @@
 
     <!-- Main Application Container -->
     <div id="main-app-container" class="hidden">
-        <div id="capture-area" class="max-w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <div id="capture-area" class="max-w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
             <!-- Header -->
-            <header class="bg-slate-800 text-white p-4 flex justify-between items-center">
-                <div id="home-btn-container" class="flex items-center gap-4">
-                     <button id="home-btn" class="p-2 rounded-full hover:bg-slate-700 transition-colors" title="กลับสู่หน้าหลัก">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+            <header class="bg-[#1e293b] text-white p-5 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 relative overflow-hidden">
+                <!-- Subtle background pattern -->
+                <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                
+                <div id="home-btn-container" class="flex items-center gap-4 z-10 w-full md:w-1/4">
+                     <button id="home-btn" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-all backdrop-blur-sm border border-white/10 shadow-sm flex items-center justify-center" title="กลับสู่หน้าหลัก">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                      </button>
-                    <h1 class="text-xl md:text-2xl font-bold tracking-wide text-shadow-md">Vay Chinnakhet</h1>
+                    <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300">Vay Chinnakhet</h1>
                 </div>
-                <div class="w-1/2 text-center">
-                    <p class="text-xl md:text-4xl font-bold tracking-wider opacity-90" id="status-title">STATUS</p>
+                <div class="w-full md:w-1/2 text-center z-10">
+                    <p class="text-2xl md:text-4xl font-black tracking-tight text-white drop-shadow-sm" id="status-title">STATUS</p>
                 </div>
-                <div class="w-1/4 text-right">
-                     <p class="text-sm md:text-base">UPDATE: <span id="update-date"></span></p>
+                <div class="w-full md:w-1/4 text-center md:text-right z-10 flex flex-col items-center md:items-end">
+                     <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-xs md:text-sm font-medium text-slate-200">
+                         <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                         <span>UPDATE: <span id="update-date" class="font-bold text-white"></span></span>
+                     </div>
                 </div>
             </header>
 
