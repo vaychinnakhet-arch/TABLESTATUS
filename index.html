@@ -591,10 +591,11 @@
         </div>
         
         <!-- Unified Controls & Actions Area -->
-        <div id="unified-controls" class="max-w-full mx-auto mt-4 bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
+        <div id="unified-controls" class="max-w-full mx-auto mt-4 bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col gap-4">
             
-            <!-- Controls Area -->
-            <div id="controls-area" class="flex flex-wrap items-center gap-x-6 gap-y-4">
+            <!-- Top Row: View Toggle & Action Buttons -->
+            <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 w-full">
+                <!-- View Toggle -->
                 <div class="flex items-center gap-3">
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">มุมมอง</span>
                     <div id="view-toggle" class="bg-slate-100 p-1 rounded-lg text-slate-600 text-sm font-medium flex">
@@ -602,53 +603,54 @@
                         <button id="view-qc-summary-btn" class="view-toggle-btn px-4 py-1.5 rounded-md">สรุป QC</button>
                         <button id="view-common-btn" class="view-toggle-btn px-4 py-1.5 rounded-md">ส่วนกลาง</button>
                     </div>
-                </div>
-
-                <div id="task-selection-container" class="w-full mt-4">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">เลือกงาน</span>
-                    <div class="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-                        <div id="task-category-buttons" class="flex gap-2 min-w-max">
-                            <!-- JS Generated Content -->
+                    
+                    <div id="tiling-view-toggle" class="flex items-center gap-3 hidden ml-4 border-l border-slate-200 pl-4">
+                         <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">รูปแบบ</span>
+                        <div class="bg-slate-100 p-1 rounded-lg text-slate-600 text-sm font-medium flex">
+                            <button id="view-tiling-summary-btn" class="view-toggle-btn px-4 py-1.5 rounded-md active">สรุป</button>
+                            <button id="view-tiling-detailed-btn" class="view-toggle-btn px-4 py-1.5 rounded-md">ละเอียด</button>
                         </div>
                     </div>
                 </div>
-
-                <div id="tiling-view-toggle" class="flex items-center gap-3 hidden">
-                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">รูปแบบ</span>
-                    <div class="bg-slate-100 p-1 rounded-lg text-slate-600 text-sm font-medium flex">
-                        <button id="view-tiling-summary-btn" class="view-toggle-btn px-4 py-1.5 rounded-md active">สรุป</button>
-                        <button id="view-tiling-detailed-btn" class="view-toggle-btn px-4 py-1.5 rounded-md">ละเอียด</button>
-                    </div>
+                
+                <!-- Action Buttons -->
+                <div id="action-buttons-container" class="flex flex-wrap justify-start xl:justify-end items-center gap-2 w-full xl:w-auto">
+                    <button id="captureBtn" class="action-btn px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        แคปเจอร์
+                    </button>
+                    <button id="openReportModalBtn" class="action-btn px-4 py-2 bg-white border border-indigo-200 text-indigo-700 rounded-lg shadow-sm hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                        ทำรายงาน
+                    </button>
+                    <button id="openCommonAreaReportModalBtn" class="action-btn px-4 py-2 bg-white border border-indigo-200 text-indigo-700 rounded-lg shadow-sm hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all hidden">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                        Infographic
+                    </button>
+                     <input type="file" id="import-file" class="hidden" accept=".json">
+                     <label for="import-file" class="action-btn custom-file-button px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg shadow-sm hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                         นำเข้า
+                     </label>
+                    <button id="exportDataBtn" class="action-btn px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg shadow-sm hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        ส่งออก
+                    </button>
+                    <button id="clearDataBtn" class="action-btn px-4 py-2 bg-white border border-rose-200 text-rose-600 rounded-lg shadow-sm hover:bg-rose-50 hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        รีเซ็ต
+                    </button>
                 </div>
             </div>
-            
-            <!-- Action Buttons -->
-            <div id="action-buttons-container" class="flex flex-wrap justify-start xl:justify-end items-center gap-2 w-full xl:w-auto">
-                <button id="captureBtn" class="action-btn px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    แคปเจอร์
-                </button>
-                <button id="openReportModalBtn" class="action-btn px-4 py-2 bg-white border border-indigo-200 text-indigo-700 rounded-lg shadow-sm hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-                    ทำรายงาน
-                </button>
-                <button id="openCommonAreaReportModalBtn" class="action-btn px-4 py-2 bg-white border border-indigo-200 text-indigo-700 rounded-lg shadow-sm hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all hidden">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
-                    Infographic
-                </button>
-                 <input type="file" id="import-file" class="hidden" accept=".json">
-                 <label for="import-file" class="action-btn custom-file-button px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg shadow-sm hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                     นำเข้า
-                 </label>
-                <button id="exportDataBtn" class="action-btn px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg shadow-sm hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    ส่งออก
-                </button>
-                <button id="clearDataBtn" class="action-btn px-4 py-2 bg-white border border-rose-200 text-rose-600 rounded-lg shadow-sm hover:bg-rose-50 hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                    รีเซ็ต
-                </button>
+
+            <!-- Bottom Row: Task Selection -->
+            <div id="task-selection-container" class="w-full border-t border-slate-100 pt-4">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 block">เลือกงาน</span>
+                <div class="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+                    <div id="task-category-buttons" class="flex flex-col gap-3 min-w-max">
+                        <!-- JS Generated Content -->
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -859,15 +861,15 @@
                 topping: { name: 'งานเท TOPPING', reportName: 'งานเทปรับระดับพื้นห้องพัก', reportEmoji: '🛠️', title: 'STATUS งานเท TOPPING', type: 'progress', tasks: [ { name: 'จับปุ่ม/ขังน้ำ', color: 'bg-violet-500', textColor: 'text-white' }, { name: 'เท Topping', color: 'bg-teal-500', textColor: 'text-white' } ] },
                 ceiling: { name: 'งานติดตั้งฝ้า', reportName: 'งานติดตั้งฝ้าห้องพัก-ห้องน้ำ', reportEmoji: '🪜', title: 'STATUS งานติดตั้งฝ้า', type: 'progress', tasks: [ { name: 'ขึ้นโครง', color: 'bg-purple-500', textColor: 'text-white' }, { name: 'ติดแผ่น', color: 'bg-lime-500', textColor: 'text-white' } ] },
                 texcaWall: { name: 'งานผนัง TEXCA', reportName: 'งานผนัง TEXCA', reportEmoji: '🧱', title: 'STATUS งานผนัง TEXCA WALL', type: 'progress', tasks: [ { name: 'ตีไลน์', color: 'bg-gray-400', textColor: 'text-white' }, { name: 'เขิบ', color: 'bg-stone-500', textColor: 'text-white' }, { name: 'TEXCA', color: 'bg-cyan-500', textColor: 'text-white' } ] },
-                furniture: { name: 'งานติดตั้งเฟอร์นิเจอร์', reportName: 'งานติดตั้งเฟอร์นิเจอร์', reportEmoji: '🛋️', title: 'STATUS งานติดตั้งเฟอร์นิเจอร์', type: 'progress', tasks: [ { name: 'ติดตั้งชุดครัว', color: 'bg-orange-500', textColor: 'text-white' }, { name: 'ติดตั้งเฟอร์นิเจอร์', color: 'bg-lime-500', textColor: 'text-white' }, ] },
-                laminate: { name: 'งานปูพื้นไม้ลามิเนต', reportName: 'งานปูพื้นไม้ลามิเนต', reportEmoji: '🌲', title: 'STATUS งานปูพื้นไม้ลามิเนต', type: 'progress', tasks: [ { name: 'ตรวจรับพื้นที่', color: 'bg-yellow-500', textColor: 'text-black' }, { name: 'ปูพื้นไม้', color: 'bg-amber-800', textColor: 'text-white' }, ] },
                 waterproofing: { name: 'งานกันซึม', reportName: 'งานกันซึม', reportEmoji: '🛡️', title: 'STATUS งานกันซึม', type: 'multi-progress', tasks: [ { name: 'ห้องน้ำ', key: 'bathroom', shortName: 'น้ำ', color: 'bg-indigo-500', textColor: 'text-white' }, { name: 'ระเบียง', key: 'balcony', shortName: 'รบ.', color: 'bg-cyan-500', textColor: 'text-white' } ] },
                 tiling: { name: 'งานปูกระเบื้อง', reportName: 'งานปูกระเบื้อง', reportEmoji: '🟧', title: 'STATUS งานปูกระเบื้อง', type: 'multi-progress', hasDetailedView: true, tasks: [ { name: 'ห้องน้ำ', key: 'bathroom', shortName: 'น้ำ', color: 'bg-teal-500', textColor: 'text-white' }, { name: 'ระเบียง', key: 'balcony', shortName: 'รบ.', color: 'bg-lime-600', textColor: 'text-white' }, { name: 'ครัว', key: 'kitchen', shortName: 'ครัว', color: 'bg-rose-500', textColor: 'text-white' } ] },
-                door: { name: 'งานติดตั้งประตูไม้', reportName: 'งานติดตั้งประตูไม้', reportEmoji: '🚪', title: 'STATUS งานติดตั้งประตูไม้', type: 'multi-progress', tasks: [ { name: 'ประตูหน้า', key: 'front', shortName: 'หน้า', color: 'bg-amber-600', textColor: 'text-white' }, { name: 'ประตูห้องน้ำ', key: 'bathroom', shortName: 'น้ำ', color: 'bg-blue-400', textColor: 'text-white' }, { name: 'อุปกรณ์ประตู', key: 'hardware', shortName: 'อปก.', color: 'bg-green-500', textColor: 'text-white' } ] },
                 aluminum: { name: 'งานติดตั้งอลูมิเนียม', reportName: 'งานติดตั้งอลูมิเนียม', reportEmoji: '🪟', title: 'STATUS งานติดตั้งอลูมิเนียม', type: 'multi-progress', hasDetailedView: true, tasks: [ { name: 'บานกั้นห้อง', key: 'partition', shortName: 'กั้น', color: 'bg-sky-400', textColor: 'text-white' }, { name: 'บานออกระเบียง', key: 'balcony', shortName: 'รบ.', color: 'bg-blue-400', textColor: 'text-white' }, { name: 'บานหน้าต่าง', key: 'window', shortName: 'นต.', color: 'bg-teal-400', textColor: 'text-white' } ] },
+                wetWork: { name: 'คะแนน WET WORK', reportName: 'WET WORK', reportEmoji: '💧', title: 'STATUS งาน WET WORK', type: 'inspection', tasks: [ { name: 'CM WW', color: 'bg-orange-400', textColor: 'text-white' }, { name: 'QC WW', color: 'bg-yellow-400', textColor: 'text-black' } ] },
+                furniture: { name: 'งานติดตั้งเฟอร์นิเจอร์', reportName: 'งานติดตั้งเฟอร์นิเจอร์', reportEmoji: '🛋️', title: 'STATUS งานติดตั้งเฟอร์นิเจอร์', type: 'progress', tasks: [ { name: 'ติดตั้งชุดครัว', color: 'bg-orange-500', textColor: 'text-white' }, { name: 'ติดตั้งเฟอร์นิเจอร์', color: 'bg-lime-500', textColor: 'text-white' }, ] },
+                laminate: { name: 'งานปูพื้นไม้ลามิเนต', reportName: 'งานปูพื้นไม้ลามิเนต', reportEmoji: '🌲', title: 'STATUS งานปูพื้นไม้ลามิเนต', type: 'progress', tasks: [ { name: 'ตรวจรับพื้นที่', color: 'bg-yellow-500', textColor: 'text-black' }, { name: 'ปูพื้นไม้', color: 'bg-amber-800', textColor: 'text-white' }, ] },
+                door: { name: 'งานติดตั้งประตูไม้', reportName: 'งานติดตั้งประตูไม้', reportEmoji: '🚪', title: 'STATUS งานติดตั้งประตูไม้', type: 'multi-progress', tasks: [ { name: 'ประตูหน้า', key: 'front', shortName: 'หน้า', color: 'bg-amber-600', textColor: 'text-white' }, { name: 'ประตูห้องน้ำ', key: 'bathroom', shortName: 'น้ำ', color: 'bg-blue-400', textColor: 'text-white' }, { name: 'อุปกรณ์ประตู', key: 'hardware', shortName: 'อปก.', color: 'bg-green-500', textColor: 'text-white' } ] },
                 showerScreen: { name: 'งาน SHOWER SCREEN', reportName: 'งาน SHOWER SCREEN', reportEmoji: '🚿', title: 'STATUS งาน SHOWER SCREEN', type: 'progress', tasks: [ { name: 'ติดตั้ง', color: 'bg-sky-500', textColor: 'text-white' }, { name: 'เก็บงาน', color: 'bg-emerald-500', textColor: 'text-white' } ] },
-                wetWork: { name: 'WET WORK', reportName: 'WET WORK', reportEmoji: '💧', title: 'STATUS งาน WET WORK', type: 'inspection', tasks: [ { name: 'CM WW', color: 'bg-orange-400', textColor: 'text-white' }, { name: 'QC WW', color: 'bg-yellow-400', textColor: 'text-black' } ] },
-                endProduct: { name: 'END PRODUCT', reportName: 'END PRODUCT', reportEmoji: '✅', title: 'STATUS งาน END PRODUCT', type: 'inspection', tasks: [ { name: 'CM End', color: 'bg-rose-300', textColor: 'text-black' }, { name: 'QC End', color: 'bg-emerald-400', textColor: 'text-black' }, ] },
+                endProduct: { name: 'คะแนน END PRODUCT', reportName: 'END PRODUCT', reportEmoji: '✅', title: 'STATUS งาน END PRODUCT', type: 'inspection', tasks: [ { name: 'CM End', color: 'bg-rose-300', textColor: 'text-black' }, { name: 'QC End', color: 'bg-emerald-400', textColor: 'text-black' }, ] },
             };
 
             const commonAreaDefinitions = {
@@ -1787,17 +1789,20 @@
                     return icons[catKey] || '<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>';
                 };
 
-                const wetWorkKeys = ['skimAndPaint', 'topping', 'ceiling', 'texcaWall', 'waterproofing', 'tiling', 'aluminum'];
-                const endProductKeys = Object.keys(taskDefinitions).filter(k => !wetWorkKeys.includes(k));
+                const wetWorkKeys = ['skimAndPaint', 'topping', 'ceiling', 'texcaWall', 'waterproofing', 'tiling', 'aluminum', 'wetWork'];
+                const endProductKeys = ['furniture', 'laminate', 'door', 'showerScreen', 'endProduct'];
 
                 const createGroup = (title, keys, colorClass) => {
                     const groupDiv = document.createElement('div');
-                    groupDiv.className = 'flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200';
+                    groupDiv.className = 'flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200 w-max';
                     
                     const label = document.createElement('div');
                     label.className = `px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xl ${colorClass}`;
                     label.textContent = title;
                     groupDiv.appendChild(label);
+                    
+                    const btnContainer = document.createElement('div');
+                    btnContainer.className = 'flex gap-1.5';
                     
                     keys.forEach(catKey => {
                         const btn = document.createElement('button');
@@ -1821,9 +1826,10 @@
                             renderTable();
                         };
                         
-                        groupDiv.appendChild(btn);
+                        btnContainer.appendChild(btn);
                     });
                     
+                    groupDiv.appendChild(btnContainer);
                     return groupDiv;
                 };
 
