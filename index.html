@@ -224,26 +224,34 @@
 
         /* SPLASH SCREEN STYLES */
         #splash-screen {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-color: #f8fafc;
         }
         .splash-card {
-            transition: all 0.2s ease-in-out;
+            background-color: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
         }
         .splash-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
         }
         .splash-nav-card {
-            transition: all 0.3s ease-in-out;
-            background-size: 200% 100%;
+            background-color: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
         }
         .splash-nav-card:hover {
-             transform: translateY(-5px);
-             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-             background-position: right center;
+             transform: translateY(-2px);
+             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+             border-color: #cbd5e1;
         }
         .splash-nav-card h3 {
-             text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+             text-shadow: none;
         }
         
         /* QUICK UPDATE MODE - iOS Redesign */
@@ -464,52 +472,53 @@
 
     <!-- Splash Screen -->
     <div id="splash-screen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="w-full max-w-5xl mx-auto">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-6xl font-extrapold text-slate-800 mb-2">Vay Chinnakhet</h1>
-                <p class="text-lg md:text-xl text-slate-600 mb-8 md:mb-12">ระบบติดตามความคืบหน้าโครงการ</p>
+        <div class="w-full max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-bold text-slate-800 mb-3 tracking-tight">Vay Chinnakhet</h1>
+                <p class="text-lg md:text-xl text-slate-500 font-medium">ระบบติดตามความคืบหน้าโครงการ</p>
             </div>
+            
             <!-- Summary Dashboard -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 md:mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <!-- Overall Progress -->
-                <div class="splash-card bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white">
-                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">ภาพรวมโครงการ</h2>
+                <div class="splash-card p-8 flex flex-col items-center justify-center text-center">
+                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">ภาพรวมโครงการ</h2>
                      <div class="infographic-progress-circle w-32 h-32 rounded-full flex items-center justify-center mx-auto" style="--progress: 0%">
-                        <span id="splash-overall-progress" class="text-3xl font-bold text-gray-800">0%</span>
+                        <span id="splash-overall-progress" class="text-3xl font-bold text-slate-800">0%</span>
                     </div>
                 </div>
                 <!-- Completed Units -->
-                <div class="splash-card bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white">
-                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">ห้องพักที่เสร็จสมบูรณ์</h2>
-                    <div class="flex items-center justify-center h-32">
-                         <p id="splash-completed-units" class="text-5xl font-extrabold text-emerald-600">0 / 0</p>
+                <div class="splash-card p-8 flex flex-col items-center justify-center text-center">
+                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">ห้องพักที่เสร็จสมบูรณ์</h2>
+                    <div class="flex items-center justify-center flex-1">
+                         <p id="splash-completed-units" class="text-5xl font-bold text-slate-800">0 <span class="text-2xl text-slate-400 font-medium">/ 0</span></p>
                     </div>
                 </div>
                 <!-- QC Pass Rate -->
-                <div class="splash-card bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white">
-                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">QC PASS RATE</h2>
-                     <div class="flex items-center justify-center h-32">
-                        <p id="splash-qc-pass-rate" class="text-5xl font-extrabold text-indigo-600">0%</p>
+                <div class="splash-card p-8 flex flex-col items-center justify-center text-center">
+                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">QC PASS RATE</h2>
+                     <div class="flex items-center justify-center flex-1">
+                        <p id="splash-qc-pass-rate" class="text-5xl font-bold text-slate-800">0%</p>
                     </div>
                 </div>
             </div>
 
             <!-- Navigation -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <div id="nav-residential" class="splash-nav-card cursor-pointer p-8 md:p-10 rounded-2xl shadow-xl text-white flex flex-col items-center justify-center" style="background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 51%, #43e97b 100%);">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m-1 4h1m5-8h1m-1 4h1m-1 4h1M5 21v-3a2 2 0 012-2h10a2 2 0 012 2v3" /></svg>
-                    <h3 class="text-xl font-bold">ระบบติดตาม (ห้องพัก)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <div id="nav-residential" class="splash-nav-card cursor-pointer p-8 flex flex-col items-center justify-center group">
+                     <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mb-4 group-hover:bg-slate-100 transition-colors">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m-1 4h1m5-8h1m-1 4h1m-1 4h1M5 21v-3a2 2 0 012-2h10a2 2 0 012 2v3" /></svg>
+                     </div>
+                    <h3 class="text-lg font-semibold text-slate-800">ระบบติดตาม (ห้องพัก)</h3>
                 </div>
-                 <div id="nav-quick-update" class="splash-nav-card cursor-pointer p-8 md:p-10 rounded-2xl shadow-xl text-white flex flex-col items-center justify-center" style="background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                    <h3 class="text-xl font-bold">โหมดอัพเดทหน้างาน</h3>
-                </div>
-                <div id="nav-common-area" class="splash-nav-card cursor-pointer p-8 md:p-10 rounded-2xl shadow-xl text-white flex flex-col items-center justify-center" style="background-image: linear-gradient(to right, #89f7fe 0%, #66a6ff 51%, #89f7fe 100%);">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>
-                    <h3 class="text-xl font-bold">ระบบติดตาม (ส่วนกลาง)</h3>
+                <div id="nav-common-area" class="splash-nav-card cursor-pointer p-8 flex flex-col items-center justify-center group">
+                    <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mb-4 group-hover:bg-slate-100 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800">ระบบติดตาม (ส่วนกลาง)</h3>
                 </div>
             </div>
-             <p id="splash-loading-text" class="mt-8 text-slate-500 text-center">กำลังเชื่อมต่อฐานข้อมูล...</p>
+             <p id="splash-loading-text" class="mt-12 text-slate-400 text-sm font-medium text-center tracking-wide">กำลังเชื่อมต่อฐานข้อมูล...</p>
         </div>
     </div>
 
@@ -545,83 +554,57 @@
             </main>
         </div>
         
-        <!-- Controls & Actions Toolbar -->
-        <div id="controls-area" class="max-w-full mx-auto mt-4 px-2 md:px-4 transition-all duration-300">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-3 md:p-4 flex flex-col xl:flex-row items-center justify-between gap-4">
-                
-                <!-- Left: View Switcher & Task Selector -->
-                <div class="flex flex-col md:flex-row items-center gap-3 w-full xl:w-auto">
-                    
-                    <!-- View Toggle (Segmented Control) -->
-                    <div class="bg-slate-100 p-1 rounded-xl flex items-center relative w-full md:w-auto justify-center">
-                        <button id="view-residential-btn" class="view-toggle-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-700 transition-all active">ห้องพัก</button>
-                        <button id="view-qc-summary-btn" class="view-toggle-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-700 transition-all">สรุป QC</button>
-                        <button id="view-common-btn" class="view-toggle-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-700 transition-all">ส่วนกลาง</button>
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="hidden md:block w-px h-8 bg-slate-200 mx-1"></div>
-
-                    <!-- Task Selector -->
-                    <div id="dropdown-container" class="relative w-full md:w-72">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" />
-                                <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-                            </svg>
-                        </div>
-                        <select id="task-category" class="appearance-none w-full bg-slate-50 border border-slate-200 text-slate-700 py-2.5 pl-10 pr-10 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all text-sm font-medium cursor-pointer hover:bg-slate-100">
-                            <!-- JS Generated Content -->
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                        </div>
-                    </div>
-
-                    <!-- Tiling View Toggle -->
-                    <div id="tiling-view-toggle" class="hidden flex items-center bg-slate-100 p-1 rounded-lg ml-2">
-                        <button id="view-tiling-summary-btn" class="view-toggle-btn px-3 py-1.5 rounded-md text-xs font-medium active">สรุป</button>
-                        <button id="view-tiling-detailed-btn" class="view-toggle-btn px-3 py-1.5 rounded-md text-xs font-medium">ละเอียด</button>
-                    </div>
-                </div>
-
-                <!-- Right: Action Buttons -->
-                <div class="flex flex-wrap items-center justify-center xl:justify-end gap-2 w-full xl:w-auto">
-                    
-                    <button id="captureBtn" class="group flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-xl shadow-sm hover:bg-indigo-700 hover:shadow-md transition-all active:scale-95">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        <span class="text-sm font-medium">แคปเจอร์</span>
-                    </button>
-
-                    <button id="openReportModalBtn" class="group flex items-center justify-center px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95">
-                        <svg class="w-4 h-4 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        <span class="text-sm font-medium">รายงาน</span>
-                    </button>
-
-                    <button id="openCommonAreaReportModalBtn" class="hidden group flex items-center justify-center px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95">
-                        <svg class="w-4 h-4 mr-2 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        <span class="text-sm font-medium">Infographic</span>
-                    </button>
-
-                    <div class="h-8 w-px bg-slate-200 mx-1 hidden sm:block"></div>
-
-                    <!-- Secondary Actions -->
-                    <div class="flex items-center gap-1">
-                        <input type="file" id="import-file" class="hidden" accept=".json">
-                        <label for="import-file" class="cursor-pointer p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all" title="นำเข้าข้อมูล">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                        </label>
-
-                        <button id="exportDataBtn" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all" title="ส่งออกข้อมูล">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        </button>
-                        
-                        <button id="clearDataBtn" class="p-2 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="ล้างข้อมูลทั้งหมด">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
-                    </div>
+        <!-- Controls Area -->
+        <div id="controls-area" class="max-w-full mx-auto p-4 mt-4 bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-x-6 gap-y-4">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-600">มุมมอง:</span>
+                <div id="view-toggle" class="bg-slate-200 p-1 rounded-full text-slate-800 text-xs md:text-sm font-semibold flex">
+                    <button id="view-residential-btn" class="view-toggle-btn px-3 py-1 rounded-full active">ห้องพัก</button>
+                    <button id="view-qc-summary-btn" class="view-toggle-btn px-3 py-1 rounded-full">สรุป QC</button>
+                    <button id="view-common-btn" class="view-toggle-btn px-3 py-1 rounded-full">ส่วนกลาง</button>
                 </div>
             </div>
+
+            <div id="dropdown-container" class="flex items-center gap-2">
+                <span class="font-bold text-slate-600">เลือกงาน:</span>
+                <select id="task-category" class="bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <!-- JS Generated Content -->
+                </select>
+            </div>
+
+            <div id="tiling-view-toggle" class="flex items-center gap-2 hidden">
+                 <span class="font-bold text-slate-600">รูปแบบ:</span>
+                <div class="bg-slate-200 p-1 rounded-full text-slate-800 text-xs md:text-sm font-semibold flex">
+                    <button id="view-tiling-summary-btn" class="view-toggle-btn px-3 py-1 rounded-full active">สรุป</button>
+                    <button id="view-tiling-detailed-btn" class="view-toggle-btn px-3 py-1 rounded-full">ละเอียด</button>
+                </div>
+            </div>
+        </div>
+        
+          <!-- Action Buttons -->
+        <div id="action-buttons-container" class="max-w-full mx-auto px-2 md:px-4 mt-4 flex flex-wrap justify-end items-center gap-2">
+            <button id="captureBtn" class="action-btn px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 text-xs md:text-sm inline-flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                แคปเจอร์ (สำหรับส่งไลน์)
+            </button>
+            <button id="openReportModalBtn" class="action-btn px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 text-xs md:text-sm inline-flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                ทำรายงาน
+            </button>
+            <button id="openCommonAreaReportModalBtn" class="action-btn px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 text-xs md:text-sm inline-flex items-center gap-2 hidden">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                สร้าง Infographic
+            </button>
+             <input type="file" id="import-file" class="hidden" accept=".json">
+             <label for="import-file" class="action-btn custom-file-button px-4 py-2 bg-slate-500 text-white rounded-md shadow hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50 text-xs md:text-sm">
+                 นำเข้าข้อมูล
+             </label>
+            <button id="exportDataBtn" class="action-btn px-4 py-2 bg-slate-500 text-white rounded-md shadow hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50 text-xs md:text-sm">
+                ส่งออกข้อมูล
+            </button>
+            <button id="clearDataBtn" class="action-btn px-4 py-2 bg-rose-600 text-white rounded-md shadow hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 text-xs md:text-sm">
+                ล้างข้อมูลทั้งหมด (รีเซ็ต)
+            </button>
         </div>
 
         <!-- Update Modal -->
@@ -3394,7 +3377,6 @@
                 // Splash Screen Nav
                 document.getElementById('nav-residential').addEventListener('click', () => enterAppView('residential'));
                 document.getElementById('nav-common-area').addEventListener('click', () => enterAppView('common'));
-                document.getElementById('nav-quick-update').addEventListener('click', enterQuickUpdateMode);
                 
                 // Main App Nav
                 document.getElementById('home-btn').addEventListener('click', backToSplash);
