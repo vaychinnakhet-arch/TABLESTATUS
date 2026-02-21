@@ -47,7 +47,24 @@
         .is-line-capturing #action-buttons-container,
         .is-line-capturing #unified-controls,
         .is-line-capturing #home-btn-container {
-            display: none;
+            display: none !important;
+        }
+        .is-line-capturing #header-title-container {
+            width: 100% !important;
+            text-align: center !important;
+            position: absolute;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            display: block !important;
+        }
+        .is-line-capturing #header-date-container {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto !important;
+            z-index: 20;
         }
 
         .table-cell {
@@ -562,9 +579,7 @@
     <div id="main-app-container" class="hidden">
         <div id="capture-area" class="max-w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
             <!-- Header -->
-            <header class="bg-[#1e293b] text-white p-5 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 relative overflow-hidden">
-                <!-- Subtle background pattern -->
-                <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <header class="bg-gradient-to-r from-slate-900 to-blue-900 text-white p-5 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 relative overflow-hidden">
                 
                 <div id="home-btn-container" class="flex items-center gap-4 z-10 w-full md:w-1/4">
                      <button id="home-btn" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-all backdrop-blur-sm border border-white/10 shadow-sm flex items-center justify-center" title="กลับสู่หน้าหลัก">
@@ -572,10 +587,10 @@
                      </button>
                     <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300">Vay Chinnakhet</h1>
                 </div>
-                <div class="w-full md:w-1/2 text-center z-10">
+                <div id="header-title-container" class="w-full md:w-1/2 text-center z-10">
                     <p class="text-2xl md:text-4xl font-black tracking-tight text-white drop-shadow-sm" id="status-title">STATUS</p>
                 </div>
-                <div class="w-full md:w-1/4 text-center md:text-right z-10 flex flex-col items-center md:items-end">
+                <div id="header-date-container" class="w-full md:w-1/4 text-center md:text-right z-10 flex flex-col items-center md:items-end">
                      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-xs md:text-sm font-medium text-slate-200">
                          <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                          <span>UPDATE: <span id="update-date" class="font-bold text-white"></span></span>
@@ -590,7 +605,7 @@
                   </table>
 
                   <!-- Legend -->
-                <div id="legend" class="mt-6 p-4 bg-white border border-slate-200 shadow-sm rounded-xl flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-slate-600">
+                <div id="legend" class="mt-4 p-3 bg-slate-50 border border-slate-200 shadow-sm rounded-xl flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-medium text-slate-700">
                     <!-- JS Generated Content -->
                 </div>
             </main>
@@ -1912,13 +1927,13 @@
             
             function updateLegend() {
                 const legend = document.getElementById('legend');
-                legend.innerHTML = '<div class="flex items-center gap-2 text-slate-800 uppercase tracking-wider text-xs font-bold mr-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>คำอธิบาย:</div>';
+                legend.innerHTML = '<div class="flex items-center gap-2 text-slate-900 uppercase tracking-wider text-xs font-bold mr-2"><svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>คำอธิบาย:</div>';
                 
                 const createLegendItem = (colorClass, text, iconHtml = '') => {
                     return `
-                        <div class="flex items-center gap-2.5 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
-                            ${iconHtml ? iconHtml : `<div class="w-4 h-4 rounded-md shadow-sm ${colorClass}"></div>`}
-                            <span class="text-slate-700">${text}</span>
+                        <div class="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                            ${iconHtml ? iconHtml : `<div class="w-4 h-4 rounded shadow-sm ring-1 ring-black/5 ${colorClass}"></div>`}
+                            <span class="text-slate-800 font-medium text-xs md:text-sm">${text}</span>
                         </div>
                     `;
                 };
@@ -1927,7 +1942,7 @@
                      legend.innerHTML += createLegendItem('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
                      legend.innerHTML += createLegendItem('bg-teal-500', 'ผ่าน (>= 85)');
                      legend.innerHTML += createLegendItem('bg-rose-500', 'ไม่ผ่าน (< 85)');
-                     legend.innerHTML += createLegendItem('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-md bg-rose-100 text-rose-600 font-bold text-xs">!</div>');
+                     legend.innerHTML += createLegendItem('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded bg-rose-100 text-rose-600 font-bold text-xs border border-rose-200">!</div>');
                      return;
                 }
                 
@@ -1943,13 +1958,13 @@
                     legend.innerHTML += createLegendItem('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
                     legend.innerHTML += createLegendItem('bg-teal-500', 'ผ่าน (>= 85)');
                     legend.innerHTML += createLegendItem('bg-rose-500', 'ไม่ผ่าน (< 85)');
-                    legend.innerHTML += createLegendItem('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-md bg-rose-100 text-rose-600 font-bold text-xs">!</div>');
+                    legend.innerHTML += createLegendItem('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded bg-rose-100 text-rose-600 font-bold text-xs border border-rose-200">!</div>');
                 } else if (categoryDef.type === 'multi-progress') {
                     legend.innerHTML += createLegendItem('bg-sky-100', 'เริ่มดำเนินการ (1-30%)');
                     legend.innerHTML += createLegendItem('bg-sky-300', 'คืบหน้า (31-60%)');
                     legend.innerHTML += createLegendItem('bg-sky-500', 'คืบหน้ามาก (61-99%)');
                     legend.innerHTML += createLegendItem('bg-teal-500', 'เสร็จสมบูรณ์ (100%)');
-                    legend.innerHTML += createLegendItem('', 'แสดงงานย่อยที่เริ่มทำแล้ว', '<div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600 border border-slate-300">ย่อ</div>');
+                    legend.innerHTML += createLegendItem('', 'แสดงงานย่อยที่เริ่มทำแล้ว', '<div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-300">ย่อ</div>');
                 } else {
                     categoryDef.tasks.forEach(task => {
                         legend.innerHTML += createLegendItem(task.color, task.name);
