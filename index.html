@@ -584,7 +584,7 @@
                   </table>
 
                   <!-- Legend -->
-                <div id="legend" class="mt-4 p-4 bg-slate-100 rounded-lg flex flex-wrap items-center gap-4 text-xs md:text-sm">
+                <div id="legend" class="mt-6 p-4 bg-white border border-slate-200 shadow-sm rounded-xl flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-slate-600">
                     <!-- JS Generated Content -->
                 </div>
             </main>
@@ -1239,16 +1239,16 @@
 
                 const thead = document.createElement('thead');
                 let headerHTML = `
-                    <tr class="bg-slate-200">
-                        <th class="border p-2" rowspan="2"><span>ชั้น</span></th>
-                        <th class="border p-2" rowspan="2"><span>รายการ</span></th>
-                        <th class="border p-2" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
+                    <tr>
+                        <th class="border p-2 bg-slate-200" rowspan="2"><span>ชั้น</span></th>
+                        <th class="border p-2 bg-slate-200" rowspan="2"><span>รายการ</span></th>
+                        <th class="border p-2 bg-slate-200" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
                         <th class="border-y border-l bg-white separator-cell" rowspan="2"></th>
                         <th class="border p-2 bg-slate-200" colspan="3"><span>สรุปผลตรวจ</span></th>
                     </tr>
-                    <tr class="bg-slate-50">`;
+                    <tr>`;
                 for (let i = 1; i <= CONFIG.ROOMS_PER_FLOOR; i++) {
-                    headerHTML += `<th class="border p-1 md:p-2 font-normal"><span>${i}</span></th>`;
+                    headerHTML += `<th class="border p-1 md:p-2 font-normal bg-slate-50"><span>${i}</span></th>`;
                 }
                 headerHTML += `
                         <th class="border p-2 bg-slate-100 font-semibold"><span>ส่งแล้ว</span></th>
@@ -1417,32 +1417,32 @@
                 let headerHTML = '';
 
                 if (isDetailedView) {
-                    headerHTML = `<tr class="bg-slate-200">
-                        <th class="border p-2" rowspan="2"><span>ชั้น</span></th>
-                        <th class="border p-2" rowspan="2" style="min-width: 100px;"><span>รายการ</span></th>
-                        <th class="border p-2" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
+                    headerHTML = `<tr>
+                        <th class="border p-2 bg-slate-200" rowspan="2"><span>ชั้น</span></th>
+                        <th class="border p-2 bg-slate-200" rowspan="2" style="min-width: 100px;"><span>รายการ</span></th>
+                        <th class="border p-2 bg-slate-200" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
                         <th class="border-y border-l bg-white separator-cell" rowspan="2"></th>
                         <th class="border p-2 bg-slate-200" rowspan="2"><span>จำนวน</span></th>
                         <th class="border p-2 bg-teal-200" rowspan="2"><span>เสร็จ</span></th>
                         <th class="border p-2 bg-rose-200" rowspan="2"><span>คงเหลือ</span></th>
                     </tr>
-                    <tr class="bg-slate-50">`;
+                    <tr>`;
                     for (let i = 1; i <= CONFIG.ROOMS_PER_FLOOR; i++) {
-                        headerHTML += `<th class="border p-1 md:p-2 font-normal"><span>${i}</span></th>`;
+                        headerHTML += `<th class="border p-1 md:p-2 font-normal bg-slate-50"><span>${i}</span></th>`;
                     }
                     headerHTML += '</tr>';
                 } else {
-                    headerHTML = `<tr class="bg-slate-200">
-                        <th class="border p-2" rowspan="2"><span>ชั้น</span></th>
-                        <th class="border p-2" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
+                    headerHTML = `<tr>
+                        <th class="border p-2 bg-slate-200" rowspan="2"><span>ชั้น</span></th>
+                        <th class="border p-2 bg-slate-200" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
                         <th class="border-y border-l bg-white separator-cell" rowspan="2"></th>
                         <th class="border p-2 bg-slate-200" colspan="${isInspection ? 3 : categoryTasks.length}"><span>${isInspection ? 'สรุปผลตรวจ' : 'จำนวน'}</span></th>
                         <th class="border p-2 bg-teal-200" rowspan="2"><span>ผ่าน/เสร็จ</span></th>
                         <th class="border p-2 bg-rose-200" rowspan="2"><span>คงเหลือ</span></th>
                     </tr>
-                    <tr class="bg-slate-50">`;
+                    <tr>`;
                     for (let i = 1; i <= CONFIG.ROOMS_PER_FLOOR; i++) {
-                        headerHTML += `<th class="border p-1 md:p-2 font-normal"><span>${i}</span></th>`;
+                        headerHTML += `<th class="border p-1 md:p-2 font-normal bg-slate-50"><span>${i}</span></th>`;
                     }
                     if (isInspection) {
                         headerHTML += `<th class="border p-2 bg-slate-100 font-semibold"><span>ส่งแล้ว</span></th>`;
@@ -1906,13 +1906,22 @@
             
             function updateLegend() {
                 const legend = document.getElementById('legend');
-                legend.innerHTML = '<strong>คำอธิบาย:</strong>';
+                legend.innerHTML = '<div class="flex items-center gap-2 text-slate-800 uppercase tracking-wider text-xs font-bold mr-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>คำอธิบาย:</div>';
                 
+                const createLegendItem = (colorClass, text, iconHtml = '') => {
+                    return `
+                        <div class="flex items-center gap-2.5 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
+                            ${iconHtml ? iconHtml : `<div class="w-4 h-4 rounded-md shadow-sm ${colorClass}"></div>`}
+                            <span class="text-slate-700">${text}</span>
+                        </div>
+                    `;
+                };
+
                 if (currentView === 'qcSummary') {
-                     legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-yellow-400"></div><span>อยู่ระหว่างตรวจสอบ</span></div>`;
-                     legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-teal-500"></div><span>ผ่าน (>= 85)</span></div>`;
-                     legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-rose-500"></div><span>ไม่ผ่าน (< 85)</span></div>`;
-                     legend.innerHTML += `<div class="flex items-center gap-2"><span class="font-bold text-lg">!</span><span>พบ Major Defect</span></div>`;
+                     legend.innerHTML += createLegendItem('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
+                     legend.innerHTML += createLegendItem('bg-teal-500', 'ผ่าน (>= 85)');
+                     legend.innerHTML += createLegendItem('bg-rose-500', 'ไม่ผ่าน (< 85)');
+                     legend.innerHTML += createLegendItem('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-md bg-rose-100 text-rose-600 font-bold text-xs">!</div>');
                      return;
                 }
                 
@@ -1921,25 +1930,25 @@
 
                 if (categoryDef.hasDetailedView && currentDetailedView === 'detailed') {
                      categoryDef.tasks.forEach(task => {
-                        legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded ${task.color}"></div><span>${task.name}</span></div>`;
+                        legend.innerHTML += createLegendItem(task.color, task.name);
                     });
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-teal-500"></div><span>เสร็จสมบูรณ์ (100%)</span></div>`;
+                    legend.innerHTML += createLegendItem('bg-teal-500', 'เสร็จสมบูรณ์ (100%)');
                 } else if (categoryDef.type === 'inspection') {
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-yellow-400"></div><span>อยู่ระหว่างตรวจสอบ</span></div>`;
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-teal-500"></div><span>ผ่าน (>= 85)</span></div>`;
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-rose-500"></div><span>ไม่ผ่าน (< 85)</span></div>`;
-                    legend.innerHTML += `<div class="flex items-center gap-2"><span class="font-bold text-lg">!</span><span>พบ Major Defect</span></div>`;
+                    legend.innerHTML += createLegendItem('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
+                    legend.innerHTML += createLegendItem('bg-teal-500', 'ผ่าน (>= 85)');
+                    legend.innerHTML += createLegendItem('bg-rose-500', 'ไม่ผ่าน (< 85)');
+                    legend.innerHTML += createLegendItem('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-md bg-rose-100 text-rose-600 font-bold text-xs">!</div>');
                 } else if (categoryDef.type === 'multi-progress') {
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-sky-100"></div><span>เริ่มดำเนินการ (1-30%)</span></div>`;
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-sky-300"></div><span>คืบหน้า (31-60%)</span></div>`;
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-sky-500"></div><span>คืบหน้ามาก (61-99%)</span></div>`;
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-teal-500"></div><span>เสร็จสมบูรณ์ (100%)</span></div>`;
-                    legend.innerHTML += `<div class="flex items-center gap-2"><span class="font-semibold text-xs border rounded px-1 bg-gray-200">ชื่อย่อ</span><span>แสดงงานย่อยที่เริ่มทำแล้ว</span></div>`;
+                    legend.innerHTML += createLegendItem('bg-sky-100', 'เริ่มดำเนินการ (1-30%)');
+                    legend.innerHTML += createLegendItem('bg-sky-300', 'คืบหน้า (31-60%)');
+                    legend.innerHTML += createLegendItem('bg-sky-500', 'คืบหน้ามาก (61-99%)');
+                    legend.innerHTML += createLegendItem('bg-teal-500', 'เสร็จสมบูรณ์ (100%)');
+                    legend.innerHTML += createLegendItem('', 'แสดงงานย่อยที่เริ่มทำแล้ว', '<div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600 border border-slate-300">ย่อ</div>');
                 } else {
                     categoryDef.tasks.forEach(task => {
-                        legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded ${task.color}"></div><span>${task.name}</span></div>`;
+                        legend.innerHTML += createLegendItem(task.color, task.name);
                     });
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-5 h-5 rounded bg-teal-500"></div><span>เสร็จสมบูรณ์</span></div>`;
+                    legend.innerHTML += createLegendItem('bg-teal-500', 'เสร็จสมบูรณ์');
                 }
             }
 
