@@ -66,6 +66,10 @@
             width: auto !important;
             z-index: 20;
         }
+        .is-line-capturing .floor-separator {
+            border-top-width: 4px !important;
+            border-top-color: #cbd5e1 !important; /* slate-300 */
+        }
 
         .table-cell {
             transition: background-color 0.2s ease-in-out;
@@ -884,18 +888,18 @@
             };
 
             const taskDefinitions = {
-                skimAndPaint: { name: 'งานสกิม/ทาสี', reportName: 'งานสกิมและทาสีห้องพัก', reportEmoji: '🎨', title: 'STATUS งานสกิม / ทาสี', type: 'progress', tasks: [ { name: 'สกิม', color: 'bg-blue-500', textColor: 'text-white' }, { name: 'ทาสี', color: 'bg-orange-400', textColor: 'text-white' } ] },
-                topping: { name: 'งานเท TOPPING', reportName: 'งานเทปรับระดับพื้นห้องพัก', reportEmoji: '🛠️', title: 'STATUS งานเท TOPPING', type: 'progress', tasks: [ { name: 'จับปุ่ม/ขังน้ำ', color: 'bg-violet-500', textColor: 'text-white' }, { name: 'เท Topping', color: 'bg-teal-500', textColor: 'text-white' } ] },
-                ceiling: { name: 'งานติดตั้งฝ้า', reportName: 'งานติดตั้งฝ้าห้องพัก-ห้องน้ำ', reportEmoji: '🪜', title: 'STATUS งานติดตั้งฝ้า', type: 'progress', tasks: [ { name: 'ขึ้นโครง', color: 'bg-purple-500', textColor: 'text-white' }, { name: 'ติดแผ่น', color: 'bg-lime-500', textColor: 'text-white' } ] },
-                texcaWall: { name: 'งานผนัง TEXCA', reportName: 'งานผนัง TEXCA', reportEmoji: '🧱', title: 'STATUS งานผนัง TEXCA WALL', type: 'progress', tasks: [ { name: 'ตีไลน์', color: 'bg-gray-400', textColor: 'text-white' }, { name: 'เขิบ', color: 'bg-stone-500', textColor: 'text-white' }, { name: 'TEXCA', color: 'bg-cyan-500', textColor: 'text-white' } ] },
+                skimAndPaint: { name: 'งานสกิม/ทาสี', reportName: 'งานสกิมและทาสีห้องพัก', reportEmoji: '🎨', title: 'STATUS งานสกิม / ทาสี', type: 'progress', tasks: [ { name: 'สกิม', color: 'bg-stone-400', textColor: 'text-white' }, { name: 'ทาสี', color: 'bg-sky-500', textColor: 'text-white' } ] },
+                topping: { name: 'งานเท TOPPING', reportName: 'งานเทปรับระดับพื้นห้องพัก', reportEmoji: '🛠️', title: 'STATUS งานเท TOPPING', type: 'progress', tasks: [ { name: 'จับปุ่ม/ขังน้ำ', color: 'bg-orange-400', textColor: 'text-white' }, { name: 'เท Topping', color: 'bg-stone-500', textColor: 'text-white' } ] },
+                ceiling: { name: 'งานติดตั้งฝ้า', reportName: 'งานติดตั้งฝ้าห้องพัก-ห้องน้ำ', reportEmoji: '🪜', title: 'STATUS งานติดตั้งฝ้า', type: 'progress', tasks: [ { name: 'ขึ้นโครง', color: 'bg-slate-500', textColor: 'text-white' }, { name: 'ติดแผ่น', color: 'bg-yellow-400', textColor: 'text-black' } ] },
+                texcaWall: { name: 'งานผนัง TEXCA', reportName: 'งานผนัง TEXCA', reportEmoji: '🧱', title: 'STATUS งานผนัง TEXCA WALL', type: 'progress', tasks: [ { name: 'ตีไลน์', color: 'bg-red-500', textColor: 'text-white' }, { name: 'เขิบ', color: 'bg-stone-400', textColor: 'text-white' }, { name: 'TEXCA', color: 'bg-orange-300', textColor: 'text-black' } ] },
                 waterproofing: { name: 'งานกันซึม', reportName: 'งานกันซึม', reportEmoji: '🛡️', title: 'STATUS งานกันซึม', type: 'multi-progress', tasks: [ { name: 'ห้องน้ำ', key: 'bathroom', shortName: 'น้ำ', color: 'bg-indigo-500', textColor: 'text-white' }, { name: 'ระเบียง', key: 'balcony', shortName: 'รบ.', color: 'bg-cyan-500', textColor: 'text-white' } ] },
                 tiling: { name: 'งานปูกระเบื้อง', reportName: 'งานปูกระเบื้อง', reportEmoji: '🟧', title: 'STATUS งานปูกระเบื้อง', type: 'multi-progress', hasDetailedView: true, tasks: [ { name: 'ห้องน้ำ', key: 'bathroom', shortName: 'น้ำ', color: 'bg-teal-500', textColor: 'text-white' }, { name: 'ระเบียง', key: 'balcony', shortName: 'รบ.', color: 'bg-lime-600', textColor: 'text-white' }, { name: 'ครัว', key: 'kitchen', shortName: 'ครัว', color: 'bg-rose-500', textColor: 'text-white' } ] },
-                aluminum: { name: 'งานติดตั้งอลูมิเนียม', reportName: 'งานติดตั้งอลูมิเนียม', reportEmoji: '🪟', title: 'STATUS งานติดตั้งอลูมิเนียม', type: 'multi-progress', hasDetailedView: true, tasks: [ { name: 'บานกั้นห้อง', key: 'partition', shortName: 'กั้น', color: 'bg-sky-400', textColor: 'text-white' }, { name: 'บานออกระเบียง', key: 'balcony', shortName: 'รบ.', color: 'bg-blue-400', textColor: 'text-white' }, { name: 'บานหน้าต่าง', key: 'window', shortName: 'นต.', color: 'bg-teal-400', textColor: 'text-white' } ] },
+                aluminum: { name: 'งานติดตั้งอลูมิเนียม', reportName: 'งานติดตั้งอลูมิเนียม', reportEmoji: '🪟', title: 'STATUS งานติดตั้งอลูมิเนียม', type: 'multi-progress', hasDetailedView: true, tasks: [ { name: 'บานกั้นห้อง', key: 'partition', shortName: 'กั้น', color: 'bg-slate-400', textColor: 'text-white' }, { name: 'บานออกระเบียง', key: 'balcony', shortName: 'รบ.', color: 'bg-blue-400', textColor: 'text-white' }, { name: 'บานหน้าต่าง', key: 'window', shortName: 'นต.', color: 'bg-sky-300', textColor: 'text-black' } ] },
                 wetWork: { name: 'คะแนน WET WORK', reportName: 'WET WORK', reportEmoji: '💧', title: 'STATUS งาน WET WORK', type: 'inspection', tasks: [ { name: 'CM WW', color: 'bg-orange-400', textColor: 'text-white' }, { name: 'QC WW', color: 'bg-yellow-400', textColor: 'text-black' } ] },
-                furniture: { name: 'งานติดตั้งเฟอร์นิเจอร์', reportName: 'งานติดตั้งเฟอร์นิเจอร์', reportEmoji: '🛋️', title: 'STATUS งานติดตั้งเฟอร์นิเจอร์', type: 'progress', tasks: [ { name: 'ติดตั้งชุดครัว', color: 'bg-orange-500', textColor: 'text-white' }, { name: 'ติดตั้งเฟอร์นิเจอร์', color: 'bg-lime-500', textColor: 'text-white' }, ] },
-                laminate: { name: 'งานปูพื้นไม้ลามิเนต', reportName: 'งานปูพื้นไม้ลามิเนต', reportEmoji: '🌲', title: 'STATUS งานปูพื้นไม้ลามิเนต', type: 'progress', tasks: [ { name: 'ตรวจรับพื้นที่', color: 'bg-yellow-500', textColor: 'text-black' }, { name: 'ปูพื้นไม้', color: 'bg-amber-800', textColor: 'text-white' }, ] },
-                door: { name: 'งานติดตั้งประตูไม้', reportName: 'งานติดตั้งประตูไม้', reportEmoji: '🚪', title: 'STATUS งานติดตั้งประตูไม้', type: 'multi-progress', tasks: [ { name: 'ประตูหน้า', key: 'front', shortName: 'หน้า', color: 'bg-amber-600', textColor: 'text-white' }, { name: 'ประตูห้องน้ำ', key: 'bathroom', shortName: 'น้ำ', color: 'bg-blue-400', textColor: 'text-white' }, { name: 'อุปกรณ์ประตู', key: 'hardware', shortName: 'อปก.', color: 'bg-green-500', textColor: 'text-white' } ] },
-                showerScreen: { name: 'งาน SHOWER SCREEN', reportName: 'งาน SHOWER SCREEN', reportEmoji: '🚿', title: 'STATUS งาน SHOWER SCREEN', type: 'progress', tasks: [ { name: 'ติดตั้ง', color: 'bg-sky-500', textColor: 'text-white' }, { name: 'เก็บงาน', color: 'bg-emerald-500', textColor: 'text-white' } ] },
+                furniture: { name: 'งานติดตั้งเฟอร์นิเจอร์', reportName: 'งานติดตั้งเฟอร์นิเจอร์', reportEmoji: '🛋️', title: 'STATUS งานติดตั้งเฟอร์นิเจอร์', type: 'progress', tasks: [ { name: 'ติดตั้งชุดครัว', color: 'bg-amber-500', textColor: 'text-white' }, { name: 'ติดตั้งเฟอร์นิเจอร์', color: 'bg-amber-700', textColor: 'text-white' }, ] },
+                laminate: { name: 'งานปูพื้นไม้ลามิเนต', reportName: 'งานปูพื้นไม้ลามิเนต', reportEmoji: '🌲', title: 'STATUS งานปูพื้นไม้ลามิเนต', type: 'progress', tasks: [ { name: 'ตรวจรับพื้นที่', color: 'bg-yellow-400', textColor: 'text-black' }, { name: 'ปูพื้นไม้', color: 'bg-amber-800', textColor: 'text-white' }, ] },
+                door: { name: 'งานติดตั้งประตูไม้', reportName: 'งานติดตั้งประตูไม้', reportEmoji: '🚪', title: 'STATUS งานติดตั้งประตูไม้', type: 'multi-progress', tasks: [ { name: 'ประตูหน้า', key: 'front', shortName: 'หน้า', color: 'bg-amber-600', textColor: 'text-white' }, { name: 'ประตูห้องน้ำ', key: 'bathroom', shortName: 'น้ำ', color: 'bg-blue-400', textColor: 'text-white' }, { name: 'อุปกรณ์ประตู', key: 'hardware', shortName: 'อปก.', color: 'bg-slate-500', textColor: 'text-white' } ] },
+                showerScreen: { name: 'งาน SHOWER SCREEN', reportName: 'งาน SHOWER SCREEN', reportEmoji: '🚿', title: 'STATUS งาน SHOWER SCREEN', type: 'progress', tasks: [ { name: 'ติดตั้ง', color: 'bg-sky-500', textColor: 'text-white' }, { name: 'เก็บงาน', color: 'bg-teal-400', textColor: 'text-white' } ] },
                 endProduct: { name: 'คะแนน END PRODUCT', reportName: 'END PRODUCT', reportEmoji: '✅', title: 'STATUS งาน END PRODUCT', type: 'inspection', tasks: [ { name: 'CM End', color: 'bg-rose-300', textColor: 'text-black' }, { name: 'QC End', color: 'bg-emerald-400', textColor: 'text-black' }, ] },
             };
 
@@ -1315,18 +1319,37 @@
                     return { styleClasses, cellText };
                 };
 
-                CONFIG.FLOORS.forEach(floor => {
+                CONFIG.FLOORS.forEach((floor, index) => {
                     const roomsOnThisFloor = (floor === 2) ? CONFIG.ROOMS_ON_FLOOR_2 : CONFIG.ROOMS_PER_FLOOR;
                     
                     const wetWorkRow = document.createElement('tr');
                     const endProductRow = document.createElement('tr');
                     
+                    // Add separation between floors
+                    const floorSeparatorClass = index === 0 ? '' : 'border-t-4 border-slate-300 floor-separator';
+                    wetWorkRow.className = `${floorSeparatorClass} bg-slate-50/30 hover:bg-slate-50 transition-colors`;
+                    endProductRow.className = `bg-slate-50/30 hover:bg-slate-50 transition-colors border-b border-slate-200`;
+
+                    // Floor Cell (Sticky)
+                    const floorCellBorderClass = index === 0 ? '' : 'border-t-4 border-slate-300 floor-separator';
                     wetWorkRow.innerHTML = `
-                        <td class="border p-2 font-bold bg-slate-100 align-middle" rowspan="2"><span>${floor}</span></td>
-                        <td class="border p-1 font-semibold bg-slate-50 text-slate-600 text-[11px] align-middle">Wet Work</td>
+                        <td class="${floorCellBorderClass} border-r-2 border-slate-300 p-2 font-black text-slate-700 align-middle text-center bg-white sticky left-0 z-20 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)]" rowspan="2" style="min-width: 50px;">
+                            <span class="text-lg">${floor}</span>
+                        </td>
+                        <td class="border-r border-slate-200 p-2 font-bold text-blue-700 bg-blue-50/80 text-xs align-middle sticky left-[50px] z-20 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)] whitespace-nowrap" style="min-width: 100px;">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                Wet Work
+                            </div>
+                        </td>
                     `;
                     endProductRow.innerHTML = `
-                        <td class="border p-1 font-semibold bg-slate-50 text-slate-600 text-[11px] align-middle">End Product</td>
+                        <td class="border-r border-slate-200 p-2 font-bold text-emerald-700 bg-emerald-50/80 text-xs align-middle sticky left-[50px] z-20 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)] whitespace-nowrap" style="min-width: 100px;">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                End Product
+                            </div>
+                        </td>
                     `;
 
                     let floorTotals = {
@@ -1336,8 +1359,8 @@
 
                     for (let room = 1; room <= CONFIG.ROOMS_PER_FLOOR; room++) {
                         if (floor === 2 && room > CONFIG.ROOMS_ON_FLOOR_2) {
-                            wetWorkRow.innerHTML += `<td class="border p-2 bg-slate-200"></td>`;
-                            endProductRow.innerHTML += `<td class="border p-2 bg-slate-200"></td>`;
+                            wetWorkRow.innerHTML += `<td class="border p-2 bg-slate-100/50"></td>`;
+                            endProductRow.innerHTML += `<td class="border p-2 bg-slate-100/50"></td>`;
                             continue;
                         }
 
@@ -1345,48 +1368,52 @@
                         const wwData = projectData.wetWork?.[floor]?.[room] || {};
                         const { styleClasses: wwStyle, cellText: wwText } = renderCellContent(wwData);
                         const wwCell = document.createElement('td');
-                        wwCell.className = `border p-2 table-cell ${wwStyle}`;
-                        wwCell.innerHTML = `<span class="percentage-text">${wwText}</span>`;
+                        wwCell.className = `border p-2 table-cell ${wwStyle} transition-opacity hover:opacity-80 cursor-default`;
+                        wwCell.innerHTML = `<span class="percentage-text font-medium">${wwText}</span>`;
                         wwCell.dataset.floor = floor;
                         wwCell.dataset.room = room;
-                        wwCell.dataset.qcType = 'wetWork';
                         wetWorkRow.appendChild(wwCell);
+                        
+                        // Count Wet Work stats
+                        if (wwData.inInspection || wwData.qcScore > 0 || wwData.cmScore > 0) {
+                            floorTotals.wetWork.submitted++;
+                            if ((wwData.qcScore || wwData.cmScore) >= 85) floorTotals.wetWork.passed++;
+                            else floorTotals.wetWork.failed++;
+                        }
 
                         // End Product Cell
                         const epData = projectData.endProduct?.[floor]?.[room] || {};
                         const { styleClasses: epStyle, cellText: epText } = renderCellContent(epData);
                         const epCell = document.createElement('td');
-                        epCell.className = `border p-2 table-cell ${epStyle}`;
-                        epCell.innerHTML = `<span class="percentage-text">${epText}</span>`;
+                        epCell.className = `border p-2 table-cell ${epStyle} transition-opacity hover:opacity-80 cursor-default`;
+                        epCell.innerHTML = `<span class="percentage-text font-medium">${epText}</span>`;
                         epCell.dataset.floor = floor;
                         epCell.dataset.room = room;
-                        epCell.dataset.qcType = 'endProduct';
                         endProductRow.appendChild(epCell);
 
-                        // Calculate floor totals
-                        const wwScore = (wwData.qcScore || 0) > 0 ? wwData.qcScore : (wwData.cmScore || 0);
-                        if (wwScore > 0) {
-                            floorTotals.wetWork.submitted++;
-                            if (wwScore >= 85) floorTotals.wetWork.passed++; else floorTotals.wetWork.failed++;
-                        }
-                        const epScore = (epData.qcScore || 0) > 0 ? epData.qcScore : (epData.cmScore || 0);
-                        if (epScore > 0) {
+                        // Count End Product stats
+                        if (epData.inInspection || epData.qcScore > 0 || epData.cmScore > 0) {
                             floorTotals.endProduct.submitted++;
-                            if (epScore >= 85) floorTotals.endProduct.passed++; else floorTotals.endProduct.failed++;
+                            if ((epData.qcScore || epData.cmScore) >= 85) floorTotals.endProduct.passed++;
+                            else floorTotals.endProduct.failed++;
                         }
                     }
 
-                    // Append Separator and Summary Cells
-                    wetWorkRow.innerHTML += `<td class="border-y border-l bg-white separator-cell" rowspan="2"></td>`;
+                    // Add Separator and Summary Columns
+                    wetWorkRow.innerHTML += `<td class="border-l-2 border-slate-300 bg-white separator-cell" rowspan="2"></td>`;
+                    
+                    // Summary for Wet Work
                     wetWorkRow.innerHTML += `
-                        <td class="border p-2 summary-cell"><span>${floorTotals.wetWork.submitted}</span></td>
-                        <td class="border p-2 summary-cell bg-teal-50"><span>${floorTotals.wetWork.passed}</span></td>
-                        <td class="border p-2 summary-cell bg-rose-50"><span>${floorTotals.wetWork.failed}</span></td>
+                        <td class="border p-2 bg-slate-50 font-semibold text-slate-700">${floorTotals.wetWork.submitted}</td>
+                        <td class="border p-2 bg-teal-50 font-semibold text-teal-700">${floorTotals.wetWork.passed}</td>
+                        <td class="border p-2 bg-rose-50 font-semibold text-rose-700">${floorTotals.wetWork.failed}</td>
                     `;
+
+                    // Summary for End Product
                     endProductRow.innerHTML += `
-                        <td class="border p-2 summary-cell"><span>${floorTotals.endProduct.submitted}</span></td>
-                        <td class="border p-2 summary-cell bg-teal-50"><span>${floorTotals.endProduct.passed}</span></td>
-                        <td class="border p-2 summary-cell bg-rose-50"><span>${floorTotals.endProduct.failed}</span></td>
+                        <td class="border p-2 bg-slate-50 font-semibold text-slate-700">${floorTotals.endProduct.submitted}</td>
+                        <td class="border p-2 bg-teal-50 font-semibold text-teal-700">${floorTotals.endProduct.passed}</td>
+                        <td class="border p-2 bg-rose-50 font-semibold text-rose-700">${floorTotals.endProduct.failed}</td>
                     `;
 
                     tbody.appendChild(wetWorkRow);
@@ -1927,56 +1954,89 @@
             
             function updateLegend() {
                 const legend = document.getElementById('legend');
-                legend.innerHTML = '<div class="flex items-center gap-2 text-slate-900 uppercase tracking-wider text-xs font-bold mr-2"><svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>ขั้นตอนการทำงาน:</div>';
                 
-                const createLegendItem = (colorClass, text, iconHtml = '') => {
+                // Single line layout
+                legend.className = 'mt-4 p-3 bg-white border border-slate-200 shadow-sm rounded-xl flex items-center gap-4 text-sm font-medium text-slate-700 overflow-x-auto';
+                legend.innerHTML = '';
+                
+                // Label
+                const label = document.createElement('div');
+                label.className = 'flex items-center gap-2 text-slate-900 uppercase tracking-wider text-xs font-bold whitespace-nowrap flex-shrink-0';
+                label.innerHTML = `
+                    <div class="p-1.5 bg-indigo-50 rounded-lg">
+                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    </div>
+                    ขั้นตอน:
+                `;
+                legend.appendChild(label);
+
+                const content = document.createElement('div');
+                content.className = 'flex items-center gap-3 flex-nowrap';
+                legend.appendChild(content);
+
+                // Helper for standard badges
+                const createBadge = (colorClass, text, iconHtml = '') => {
                     return `
-                        <div class="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                            ${iconHtml ? iconHtml : `<div class="w-4 h-4 rounded shadow-sm ring-1 ring-black/5 ${colorClass}"></div>`}
-                            <span class="text-slate-800 font-medium text-xs md:text-sm">${text}</span>
+                        <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm transition-transform hover:scale-105 flex-shrink-0">
+                            ${iconHtml ? iconHtml : `<div class="w-3 h-3 rounded-full ${colorClass} ring-2 ring-slate-50"></div>`}
+                            <span class="text-slate-600 font-medium text-xs md:text-sm whitespace-nowrap">${text}</span>
                         </div>
                     `;
                 };
 
-                const arrowHtml = `<div class="text-slate-400 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg></div>`;
+                // Helper for sequential steps
+                const createStep = (colorClass, text, number, isLast = false) => {
+                    return `
+                        <div class="flex items-center group flex-shrink-0">
+                            <div class="flex items-center gap-2 bg-white pl-2 pr-3 py-1.5 rounded-full border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-indigo-100">
+                                <div class="w-5 h-5 rounded-full ${colorClass} flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-1 ring-white">
+                                    ${number}
+                                </div>
+                                <span class="text-slate-700 font-medium text-xs md:text-sm whitespace-nowrap">${text}</span>
+                            </div>
+                            ${!isLast ? `
+                                <div class="mx-2 text-slate-300 group-hover:text-indigo-300 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                };
 
+                // Logic to populate content
                 if (currentView === 'qcSummary') {
-                     legend.innerHTML += createLegendItem('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
-                     legend.innerHTML += createLegendItem('bg-teal-500', 'ผ่าน (>= 85)');
-                     legend.innerHTML += createLegendItem('bg-rose-500', 'ไม่ผ่าน (< 85)');
-                     legend.innerHTML += createLegendItem('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded bg-rose-100 text-rose-600 font-bold text-xs border border-rose-200">!</div>');
+                     content.innerHTML += createBadge('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
+                     content.innerHTML += createBadge('bg-teal-500', 'ผ่าน (>= 85)');
+                     content.innerHTML += createBadge('bg-rose-500', 'ไม่ผ่าน (< 85)');
+                     content.innerHTML += createBadge('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-[10px] border border-rose-200">!</div>');
                      return;
                 }
                 
                 const categoryDef = taskDefinitions[currentCategory];
-                if (!categoryDef) return; // Guard against missing definition
+                if (!categoryDef) return;
 
                 if (categoryDef.hasDetailedView && currentDetailedView === 'detailed') {
                      categoryDef.tasks.forEach(task => {
-                        legend.innerHTML += createLegendItem(task.color, task.name);
+                        content.innerHTML += createBadge(task.color, task.name);
                     });
-                    legend.innerHTML += createLegendItem('bg-teal-500', 'เสร็จสมบูรณ์ (100%)');
+                    content.innerHTML += createBadge('bg-emerald-500', 'เสร็จสมบูรณ์ (100%)');
                 } else if (categoryDef.type === 'inspection') {
-                    legend.innerHTML += createLegendItem('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
-                    legend.innerHTML += createLegendItem('bg-teal-500', 'ผ่าน (>= 85)');
-                    legend.innerHTML += createLegendItem('bg-rose-500', 'ไม่ผ่าน (< 85)');
-                    legend.innerHTML += createLegendItem('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded bg-rose-100 text-rose-600 font-bold text-xs border border-rose-200">!</div>');
+                    content.innerHTML += createBadge('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
+                    content.innerHTML += createBadge('bg-teal-500', 'ผ่าน (>= 85)');
+                    content.innerHTML += createBadge('bg-rose-500', 'ไม่ผ่าน (< 85)');
+                    content.innerHTML += createBadge('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-[10px] border border-rose-200">!</div>');
                 } else if (categoryDef.type === 'multi-progress') {
-                    legend.innerHTML += createLegendItem('bg-sky-100', 'เริ่มดำเนินการ (1-30%)');
-                    legend.innerHTML += createLegendItem('bg-sky-300', 'คืบหน้า (31-60%)');
-                    legend.innerHTML += createLegendItem('bg-sky-500', 'คืบหน้ามาก (61-99%)');
-                    legend.innerHTML += createLegendItem('bg-teal-500', 'เสร็จสมบูรณ์ (100%)');
-                    legend.innerHTML += createLegendItem('', 'แสดงงานย่อยที่เริ่มทำแล้ว', '<div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-300">ย่อ</div>');
+                    content.innerHTML += createBadge('bg-sky-100', 'เริ่มดำเนินการ (1-30%)');
+                    content.innerHTML += createBadge('bg-sky-300', 'คืบหน้า (31-60%)');
+                    content.innerHTML += createBadge('bg-sky-500', 'คืบหน้ามาก (61-99%)');
+                    content.innerHTML += createBadge('bg-emerald-500', 'เสร็จสมบูรณ์ (100%)');
+                    content.innerHTML += createBadge('', 'แสดงงานย่อยที่เริ่มทำแล้ว', '<div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-300">ย่อ</div>');
                 } else {
-                    // Sequential flow for standard progress tasks
-                    let stepsHtml = '';
+                    // Sequential flow
                     categoryDef.tasks.forEach((task, index) => {
-                        stepsHtml += createLegendItem(task.color, task.name);
-                        stepsHtml += arrowHtml;
+                        content.innerHTML += createStep(task.color, task.name, index + 1);
                     });
-                    stepsHtml += createLegendItem('bg-teal-500', 'เสร็จสมบูรณ์');
-                    
-                    legend.innerHTML += `<div class="flex flex-wrap items-center gap-2">${stepsHtml}</div>`;
+                    content.innerHTML += createStep('bg-emerald-500', 'เสร็จสมบูรณ์', categoryDef.tasks.length + 1, true);
                 }
             }
 
