@@ -669,15 +669,12 @@
                 </div>
 
                 <div id="modal-progress-view" class="space-y-5">
-                    <div>
-                        <label for="modal-task-select" class="block text-sm font-semibold text-slate-700 mb-2">เลือกงานที่ต้องการอัพเดท</label>
-                        <div class="relative">
-                            <select id="modal-task-select" class="appearance-none block w-full rounded-xl border-slate-200 bg-slate-50 text-slate-700 font-medium focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3.5 pr-10 transition-colors cursor-pointer hover:bg-slate-100">
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </div>
+                    <div id="modal-task-select-container">
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">เลือกงานที่ต้องการอัพเดท</label>
+                        <div id="modal-task-buttons" class="flex flex-wrap gap-2">
+                            <!-- JS Generated Buttons -->
                         </div>
+                        <input type="hidden" id="modal-task-select" value="0">
                     </div>
                     
                     <div>
@@ -1940,8 +1937,7 @@
 
                 const progressView = document.getElementById('modal-progress-view');
                 progressView.classList.remove('hidden');
-                document.getElementById('modal-task-select').style.display = 'none';
-                document.querySelector('label[for="modal-task-select"]').style.display = 'none';
+                document.getElementById('modal-task-select-container').style.display = 'none';
                 document.getElementById('progress-input').value = progress;
                 
                 openModal('updateModal');
@@ -1960,8 +1956,7 @@
                 document.getElementById('modal-progress-view').classList.add('hidden');
                 document.getElementById('modal-inspection-view').classList.add('hidden');
                 document.getElementById('modal-multi-progress-view').classList.add('hidden');
-                document.getElementById('modal-task-select').style.display = 'block';
-                document.querySelector('label[for="modal-task-select"]').style.display = 'block';
+                document.getElementById('modal-task-select-container').style.display = 'block';
 
                 if (categoryDef.type === 'inspection') {
                     document.getElementById('modal-inspection-view').classList.remove('hidden');
@@ -2021,12 +2016,46 @@
                     const taskSelect = document.getElementById('modal-task-select');
                     const progressInput = document.getElementById('progress-input');
                     const isMultiSelect = selectedCells.size > 1;
-                    taskSelect.innerHTML = '';
-                    categoryTasks.forEach((task, index) => taskSelect.innerHTML += `<option value="${index}">${task.name}</option>`);
                     
+                    const taskButtonsContainer = document.getElementById('modal-task-buttons');
+                    
+                    const renderTaskButtons = (selectedIndex) => {
+                        taskButtonsContainer.innerHTML = '';
+                        categoryTasks.forEach((task, index) => {
+                            const isSelected = index === selectedIndex;
+                            const isPrevious = index < selectedIndex;
+                            
+                            let btnClass = "px-4 py-2 rounded-xl text-sm font-semibold transition-all border-2 flex items-center gap-2 ";
+                            if (isSelected) {
+                                btnClass += "bg-indigo-600 border-indigo-600 text-white shadow-md";
+                            } else if (isPrevious) {
+                                btnClass += "bg-emerald-50 border-emerald-500 text-emerald-700";
+                            } else {
+                                btnClass += "bg-white border-slate-200 text-slate-600 hover:border-indigo-300 hover:bg-slate-50";
+                            }
+                            
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = btnClass;
+                            
+                            if (isPrevious) {
+                                btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>${task.name}`;
+                            } else {
+                                btn.textContent = task.name;
+                            }
+                            
+                            btn.onclick = () => {
+                                taskSelect.value = index;
+                                renderTaskButtons(index);
+                            };
+                            taskButtonsContainer.appendChild(btn);
+                        });
+                    };
+
                     if (isMultiSelect) {
                         taskSelect.value = 0;
                         progressInput.value = '';
+                        renderTaskButtons(0);
                     } else {
                         let taskToShowIndex = unitData.taskIndex || 0;
                         let progressToShow = unitData.progress || 0;
@@ -2036,6 +2065,7 @@
                         }
                         taskSelect.value = taskToShowIndex;
                         progressInput.value = progressToShow;
+                        renderTaskButtons(taskToShowIndex);
                     }
                 }
                 
