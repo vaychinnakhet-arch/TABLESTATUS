@@ -565,6 +565,10 @@
              animation: spin 1s linear infinite;
         }
 
+        @keyframes progress-stripes {
+            from { background-position: 1rem 0; }
+            to { background-position: 0 0; }
+        }
     </style>
 <link rel="stylesheet" href="/index.css">
 </head>
@@ -1301,11 +1305,18 @@
                         
                         card.innerHTML = `
                             ${iconHtml}
-                            <h3 class="text-sm font-semibold text-slate-800 text-center mb-3 line-clamp-2 h-10">${catDef.name}</h3>
-                            <div class="w-full bg-slate-100 rounded-full h-2 mb-2 overflow-hidden">
-                                <div class="${progressColor} h-full rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                            <h3 class="text-sm font-semibold text-slate-800 text-center mb-4 line-clamp-2 h-10 flex items-center justify-center">${catDef.name}</h3>
+                            <div class="w-full flex flex-col gap-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-slate-500 font-medium">ความคืบหน้า</span>
+                                    <span class="font-bold ${textColor}">${progress.toFixed(1)}%</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden shadow-inner border border-slate-200/50">
+                                    <div class="${progressColor} h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden" style="width: ${progress}%">
+                                        <div class="absolute inset-0 bg-white/20 w-full" style="background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent); background-size: 1rem 1rem; animation: progress-stripes 1s linear infinite;"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <span class="text-xs font-bold ${textColor}">${progress.toFixed(1)}%</span>
                         `;
                         return card;
                     };
