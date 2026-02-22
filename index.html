@@ -1331,9 +1331,8 @@
                     endProductRow.className = `bg-slate-50/30 hover:bg-slate-50 transition-colors border-b border-slate-200`;
 
                     // Floor Cell (Sticky)
-                    const floorCellBorderClass = index === 0 ? '' : 'border-t-4 border-slate-300 floor-separator';
                     wetWorkRow.innerHTML = `
-                        <td class="${floorCellBorderClass} border-r-2 border-slate-300 p-2 font-black text-slate-700 align-middle text-center bg-white sticky left-0 z-20 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)]" rowspan="2" style="min-width: 50px;">
+                        <td class="border-r-2 border-slate-300 p-2 font-black text-slate-700 align-middle text-center bg-white sticky left-0 z-20 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)]" rowspan="2" style="min-width: 50px;">
                             <span class="text-lg">${floor}</span>
                         </td>
                         <td class="border-r border-slate-200 p-2 font-bold text-blue-700 bg-blue-50/80 text-xs align-middle sticky left-[50px] z-20 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)] whitespace-nowrap" style="min-width: 100px;">
