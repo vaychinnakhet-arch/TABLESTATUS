@@ -52,11 +52,12 @@
         .is-line-capturing #header-title-container {
             width: 100% !important;
             text-align: center !important;
-            position: absolute;
-            left: 0;
-            right: 0;
+            position: relative !important;
+            left: auto !important;
+            right: auto !important;
             pointer-events: none;
             display: block !important;
+            padding: 1rem 0 !important;
         }
         .is-line-capturing #header-date-container {
             position: absolute;
@@ -68,20 +69,24 @@
             display: flex !important;
             align-items: center !important;
             justify-content: flex-end !important;
+            white-space: nowrap !important;
         }
         .is-line-capturing #header-date-container > div {
-            display: flex !important;
+            display: inline-flex !important;
             align-items: center !important;
+            height: 32px !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
         }
         .is-line-capturing #header-date-container svg {
             margin-bottom: 0 !important;
             vertical-align: middle !important;
+            margin-top: -2px !important;
         }
         .is-line-capturing #header-date-container span {
-            line-height: 1 !important;
+            line-height: 32px !important;
             vertical-align: middle !important;
-            display: inline-flex !important;
-            align-items: center !important;
+            display: inline-block !important;
         }
         .is-line-capturing .floor-separator {
             border-top-width: 4px !important;
@@ -90,15 +95,25 @@
         .is-line-capturing th, .is-line-capturing td {
             vertical-align: middle !important;
         }
+        .is-line-capturing th {
+            white-space: nowrap !important;
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+        }
         .is-line-capturing #legend > div {
             display: flex !important;
             align-items: center !important;
         }
         .is-line-capturing #legend span {
-            line-height: 1 !important;
+            line-height: 20px !important;
             vertical-align: middle !important;
-            display: inline-flex !important;
-            align-items: center !important;
+            display: inline-block !important;
+        }
+        .is-line-capturing .legend-number-circle {
+            display: inline-block !important;
+            line-height: 20px !important;
+            text-align: center !important;
+            padding: 0 !important;
         }
 
         .table-cell {
@@ -147,23 +162,13 @@
              display: flex;
              align-items: center;
              cursor: pointer;
-             padding: 0.5rem;
-             border-radius: 0.375rem;
              transition: background-color 0.2s;
         }
-         .report-selection-label:hover {
-             background-color: #f9fafb;
-         }
         .report-selection-label .box {
-            width: 1.25rem;
-            height: 1.25rem;
-            border: 2px solid #9ca3af;
-            margin-right: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            border-radius: 0.25rem;
             flex-shrink: 0;
         }
          .report-selection-label .box .icon {
@@ -173,8 +178,8 @@
          }
 
         input[type="checkbox"]:checked + .report-selection-label .box {
-            background-color: #4f46e5;
-            border-color: #4f46e5;
+            background-color: #4f46e5 !important;
+            border-color: #4f46e5 !important;
         }
          input[type="checkbox"]:checked + .report-selection-label .box .icon {
             opacity: 1;
@@ -192,37 +197,22 @@
         }
 
         .floor-selector-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 9999px;
-            border: 1px solid #d1d5db;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            font-weight: 500;
-        }
-        .floor-selector-btn:hover {
-            border-color: #6366f1;
-            color: #4338ca;
         }
         input.report-floor-checkbox:checked + .floor-selector-btn {
-            background-color: #4f46e5;
-            color: white;
-            border-color: #4f46e5;
+            background-color: #4f46e5 !important;
+            color: white !important;
+            border-color: #4f46e5 !important;
         }
 
         .report-main-task-container {
             cursor: move;
-            background-color: white;
-            border-radius: 0.375rem;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
         }
         .report-main-task-container.dragging {
             opacity: 0.5;
-            background-color: #eef2ff;
+            background-color: #eef2ff !important;
+            border-color: #818cf8 !important;
         }
         
         #ai-loading-overlay {
@@ -258,8 +248,14 @@
         }
         .report-type-toggle-btn.active {
             background-color: #ffffff;
-            color: #374151;
+            color: #1e293b; /* slate-800 */
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        }
+        .report-type-toggle-btn:not(.active) {
+            color: #64748b; /* slate-500 */
+        }
+        .report-type-toggle-btn:not(.active):hover {
+            color: #475569; /* slate-600 */
         }
 
         /* UI/UX IMPROVEMENTS */
@@ -552,6 +548,10 @@
              animation: spin 1s linear infinite;
         }
 
+        @keyframes progress-stripes {
+            from { background-position: 1rem 0; }
+            to { background-position: 0 0; }
+        }
     </style>
 <link rel="stylesheet" href="/index.css">
 </head>
@@ -587,7 +587,7 @@
             <div class="mb-4 text-left">
                 <h2 class="text-lg font-bold text-slate-700">เลือกงานที่ต้องการดูรายละเอียด</h2>
             </div>
-            <div id="splash-task-cards" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-full mx-auto">
+            <div id="splash-task-cards" class="max-w-full mx-auto flex flex-col gap-8">
                 <!-- Cards will be generated here -->
             </div>
             
@@ -801,17 +801,19 @@
         </div>
         
         <!-- Report Generator & AI Modal -->
-        <div id="reportModal" class="modal fixed inset-0 w-full h-full items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
-            <div class="bg-white rounded-lg shadow-xl w-full max-w-7xl h-[95vh] flex flex-col">
-                <div class="flex justify-between items-center p-4 border-b">
-                    <h2 id="report-modal-title" class="text-2xl font-bold inline-flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+        <div id="reportModal" class="modal fixed inset-0 w-full h-full items-center justify-center z-50 p-4 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-7xl h-[95vh] flex flex-col overflow-hidden border border-slate-200">
+                <div class="flex justify-between items-center p-5 border-b border-slate-200 bg-slate-50/50">
+                    <h2 id="report-modal-title" class="text-2xl font-bold inline-flex items-center gap-3 text-slate-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-700"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
                         สร้างรายงาน
                     </h2>
-                    <button id="closeReportModalBtn" class="text-3xl text-gray-500 hover:text-gray-800">&times;</button>
+                    <button id="closeReportModalBtn" class="text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 p-2 rounded-full transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                 </div>
                 
-                <div id="report-content-area" class="flex-grow grid grid-cols-1 xl:grid-cols-3 gap-4 min-h-0 p-4 overflow-y-auto">
+                <div id="report-content-area" class="flex-grow grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-0 p-6 overflow-y-auto bg-white">
                     <!-- JS Generated Content -->
                 </div>
             </div>
@@ -1177,20 +1179,76 @@
             }
             
             const categoryIcons = {
-                skimAndPaint: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Artist%20Palette.png',
-                topping: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Hammer%20and%20Wrench.png',
-                ceiling: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Ladder.png',
-                texcaWall: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Brick.png',
-                waterproofing: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Shield.png',
-                tiling: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Orange%20Square.png',
-                aluminum: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Window.png',
-                wetWork: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png',
-                furniture: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Couch%20and%20Lamp.png',
-                laminate: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Evergreen%20Tree.png',
-                door: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Door.png',
-                showerScreen: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Shower.png',
-                endProduct: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Check%20Mark%20Button.png',
-                common: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Office%20Building.png'
+                skimAndPaint: {
+                    bg: 'bg-pink-100',
+                    color: 'text-pink-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/><path d="M4 20l3.5-3.5"/><path d="M14 4l6 6"/></svg>'
+                },
+                topping: {
+                    bg: 'bg-stone-100',
+                    color: 'text-stone-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>'
+                },
+                ceiling: {
+                    bg: 'bg-sky-100',
+                    color: 'text-sky-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M4 6h16"/><path d="M4 18h16"/></svg>'
+                },
+                texcaWall: {
+                    bg: 'bg-orange-100',
+                    color: 'text-orange-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v6"/><path d="M15 9v6"/><path d="M9 15v6"/></svg>'
+                },
+                waterproofing: {
+                    bg: 'bg-cyan-100',
+                    color: 'text-cyan-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>'
+                },
+                tiling: {
+                    bg: 'bg-teal-100',
+                    color: 'text-teal-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="1"/><rect width="8" height="8" x="13" y="3" rx="1"/><rect width="8" height="8" x="3" y="13" rx="1"/><rect width="8" height="8" x="13" y="13" rx="1"/></svg>'
+                },
+                aluminum: {
+                    bg: 'bg-slate-100',
+                    color: 'text-slate-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>'
+                },
+                wetWork: {
+                    bg: 'bg-indigo-100',
+                    color: 'text-indigo-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>'
+                },
+                furniture: {
+                    bg: 'bg-amber-100',
+                    color: 'text-amber-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/><path d="M2 13v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5"/><path d="M6 13v-4"/><path d="M18 13v-4"/></svg>'
+                },
+                laminate: {
+                    bg: 'bg-yellow-100',
+                    color: 'text-yellow-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M4 6h16"/><path d="M4 18h16"/></svg>'
+                },
+                door: {
+                    bg: 'bg-amber-100',
+                    color: 'text-amber-800',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16"/><path d="M2 20h20"/><path d="M14 12v.01"/></svg>'
+                },
+                showerScreen: {
+                    bg: 'bg-blue-100',
+                    color: 'text-blue-500',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M12 18v4"/><path d="M4.93 10.93l4.24 4.24"/><path d="M14.83 14.83l4.24 4.24"/><path d="M14.83 9.17l4.24-4.24"/><path d="M4.93 13.07l4.24-4.24"/></svg>'
+                },
+                endProduct: {
+                    bg: 'bg-emerald-100',
+                    color: 'text-emerald-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>'
+                },
+                common: {
+                    bg: 'bg-violet-100',
+                    color: 'text-violet-600',
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>'
+                }
             };
 
             function renderSplashScreen() {
@@ -1207,56 +1265,96 @@
                 if (taskCardsContainer) {
                     taskCardsContainer.innerHTML = '';
                     
-                    // Add residential tasks
-                    Object.keys(taskDefinitions).forEach(catKey => {
-                        const catDef = taskDefinitions[catKey];
-                        const progress = summary.taskProgress ? summary.taskProgress[catKey] || 0 : 0;
-                        
-                        const iconUrl = categoryIcons[catKey] || '';
-                        const iconHtml = iconUrl 
-                            ? `<img src="${iconUrl}" alt="${catDef.name}" class="w-12 h-12 mb-2 object-contain" onerror="this.onerror=null; this.outerHTML='<div class=\\'text-3xl mb-2\\'>${catDef.reportEmoji || '📋'}</div>';">`
-                            : `<div class="text-3xl mb-2">${catDef.reportEmoji || '📋'}</div>`;
+                    const wetWorkKeys = ['skimAndPaint', 'topping', 'ceiling', 'texcaWall', 'waterproofing', 'tiling', 'aluminum', 'wetWork'];
+                    const endProductKeys = ['furniture', 'laminate', 'door', 'showerScreen', 'endProduct'];
+                    
+                    const createCard = (catKey, catDef, progress, isCommon = false) => {
+                        const iconData = categoryIcons[catKey] || { bg: 'bg-slate-100', color: 'text-slate-600', svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>' };
+                        const iconHtml = `<div class="w-14 h-14 rounded-2xl ${iconData.bg} ${iconData.color} flex items-center justify-center mb-4 shadow-sm">${iconData.svg}</div>`;
                         
                         const card = document.createElement('div');
-                        card.className = 'splash-nav-card cursor-pointer p-4 flex flex-col items-center justify-center group bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all';
+                        const hoverBorderColor = isCommon ? 'hover:border-cyan-100' : 'hover:border-indigo-100';
+                        const progressColor = isCommon ? 'bg-cyan-500' : 'bg-indigo-500';
+                        const textColor = isCommon ? 'text-cyan-600' : 'text-indigo-600';
+                        
+                        card.className = `splash-nav-card cursor-pointer p-5 flex flex-col items-center justify-center group bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md ${hoverBorderColor} transition-all`;
                         card.onclick = () => {
-                            currentCategory = catKey;
-                            setupCategoryButtons();
-                            enterAppView('residential');
+                            if (isCommon) {
+                                enterAppView('common');
+                            } else {
+                                currentCategory = catKey;
+                                setupCategoryButtons();
+                                enterAppView('residential');
+                            }
                         };
                         
                         card.innerHTML = `
                             ${iconHtml}
-                            <h3 class="text-sm font-semibold text-slate-800 text-center mb-2 line-clamp-2 h-10">${catDef.name}</h3>
-                            <div class="w-full bg-slate-100 rounded-full h-2 mb-1">
-                                <div class="bg-indigo-500 h-2 rounded-full" style="width: ${progress}%"></div>
+                            <h3 class="text-sm font-semibold text-slate-800 text-center mb-4 line-clamp-2 h-10 flex items-center justify-center">${catDef.name}</h3>
+                            <div class="w-full flex flex-col gap-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-slate-500 font-medium">ความคืบหน้า</span>
+                                    <span class="font-bold ${textColor}">${progress.toFixed(1)}%</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden shadow-inner border border-slate-200/50">
+                                    <div class="${progressColor} h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden" style="width: ${progress}%">
+                                        <div class="absolute inset-0 bg-white/20 w-full" style="background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent); background-size: 1rem 1rem; animation: progress-stripes 1s linear infinite;"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <span class="text-xs font-bold text-indigo-600">${progress.toFixed(1)}%</span>
                         `;
-                        taskCardsContainer.appendChild(card);
-                    });
-                    
-                    // Add Common Area
-                    const commonProgress = summary.taskProgress ? summary.taskProgress['common'] || 0 : 0;
-                    const commonIconUrl = categoryIcons['common'];
-                    const commonIconHtml = commonIconUrl
-                        ? `<img src="${commonIconUrl}" alt="พื้นที่ส่วนกลาง" class="w-12 h-12 mb-2 object-contain" onerror="this.onerror=null; this.outerHTML='<div class=\\'text-3xl mb-2\\'>🏢</div>';">`
-                        : `<div class="text-3xl mb-2">🏢</div>`;
-
-                    const commonCard = document.createElement('div');
-                    commonCard.className = 'splash-nav-card cursor-pointer p-4 flex flex-col items-center justify-center group bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all';
-                    commonCard.onclick = () => {
-                        enterAppView('common');
+                        return card;
                     };
-                    commonCard.innerHTML = `
-                        ${commonIconHtml}
-                        <h3 class="text-sm font-semibold text-slate-800 text-center mb-2 line-clamp-2 h-10">พื้นที่ส่วนกลาง</h3>
-                        <div class="w-full bg-slate-100 rounded-full h-2 mb-1">
-                            <div class="bg-cyan-500 h-2 rounded-full" style="width: ${commonProgress}%"></div>
-                        </div>
-                        <span class="text-xs font-bold text-cyan-600">${commonProgress.toFixed(1)}%</span>
+
+                    const createGroupSection = (title, keys, colorClass) => {
+                        const section = document.createElement('div');
+                        
+                        const header = document.createElement('div');
+                        header.className = 'flex items-center gap-3 mb-4';
+                        header.innerHTML = `
+                            <div class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xl ${colorClass}">${title}</div>
+                            <div class="h-px flex-1 bg-slate-200"></div>
+                        `;
+                        section.appendChild(header);
+                        
+                        const grid = document.createElement('div');
+                        grid.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4';
+                        
+                        keys.forEach(key => {
+                            if (taskDefinitions[key]) {
+                                const progress = summary.taskProgress ? summary.taskProgress[key] || 0 : 0;
+                                grid.appendChild(createCard(key, taskDefinitions[key], progress));
+                            }
+                        });
+                        
+                        section.appendChild(grid);
+                        return section;
+                    };
+
+                    // Add WETWORK Group
+                    taskCardsContainer.appendChild(createGroupSection('WETWORK', wetWorkKeys, 'bg-blue-100 text-blue-700'));
+                    
+                    // Add END PRODUCT Group
+                    taskCardsContainer.appendChild(createGroupSection('END PRODUCT', endProductKeys, 'bg-emerald-100 text-emerald-700'));
+
+                    // Add Common Area Section
+                    const commonSection = document.createElement('div');
+                    const commonHeader = document.createElement('div');
+                    commonHeader.className = 'flex items-center gap-3 mb-4';
+                    commonHeader.innerHTML = `
+                        <div class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xl bg-violet-100 text-violet-700">ส่วนกลาง</div>
+                        <div class="h-px flex-1 bg-slate-200"></div>
                     `;
-                    taskCardsContainer.appendChild(commonCard);
+                    commonSection.appendChild(commonHeader);
+                    
+                    const commonGrid = document.createElement('div');
+                    commonGrid.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4';
+                    
+                    const commonProgress = summary.taskProgress ? summary.taskProgress['common'] || 0 : 0;
+                    commonGrid.appendChild(createCard('common', { name: 'พื้นที่ส่วนกลาง' }, commonProgress, true));
+                    
+                    commonSection.appendChild(commonGrid);
+                    taskCardsContainer.appendChild(commonSection);
                 }
             }
 
@@ -2093,7 +2191,7 @@
                     return `
                         <div class="flex items-center group flex-shrink-0">
                             <div class="flex items-center gap-2 bg-white pl-2 pr-3 py-1.5 rounded-full border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-indigo-100">
-                                <div class="w-5 h-5 rounded-full ${colorClass} flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-1 ring-white">
+                                <div class="w-5 h-5 rounded-full ${colorClass} flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-1 ring-white legend-number-circle">
                                     ${number}
                                 </div>
                                 <span class="text-slate-700 font-medium text-xs md:text-sm whitespace-nowrap">${text}</span>
@@ -2838,82 +2936,98 @@
                 const reportContentArea = document.getElementById('report-content-area');
                 
                 const controlsHTML = `
-                    <div class="lg:col-span-1 flex flex-col gap-4">
+                    <div class="lg:col-span-1 flex flex-col gap-6 pr-2">
+                        <!-- Section 1 -->
                         <div>
-                             <div class="flex justify-between items-center pr-2">
-                                 <h3 class="font-semibold px-2 mb-2">1. เลือกและจัดลำดับงาน</h3>
-                                 <div>
-                                     <button id="selectAllTasksBtn" class="text-xs text-indigo-600 hover:underline">เลือกทั้งหมด</button>
-                                     <button id="deselectAllTasksBtn" class="text-xs text-gray-500 hover:underline ml-2">ล้างทั้งหมด</button>
+                             <div class="flex justify-between items-end mb-3">
+                                 <h3 class="font-bold text-slate-800">1. เลือกและจัดลำดับงาน</h3>
+                                 <div class="flex gap-3">
+                                     <button id="selectAllTasksBtn" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">เลือกทั้งหมด</button>
+                                     <button id="deselectAllTasksBtn" class="text-xs text-slate-500 hover:text-slate-700 font-medium">ล้างทั้งหมด</button>
                                  </div>
                              </div>
                              <div id="report-task-list-container"></div>
                         </div>
-                        <div class="border-t pt-4">
-                             <div class="flex justify-between items-center pr-2">
-                                 <h3 class="font-semibold px-2 mb-2">2. เลือกชั้นที่ต้องการรายงาน</h3>
-                                 <div>
-                                     <button id="selectAllFloorsBtn" class="text-xs text-indigo-600 hover:underline">เลือกทั้งหมด</button>
-                                     <button id="deselectAllFloorsBtn" class="text-xs text-gray-500 hover:underline ml-2">ล้างทั้งหมด</button>
+                        
+                        <div class="h-px bg-slate-200 w-full"></div>
+
+                        <!-- Section 2 -->
+                        <div>
+                             <div class="flex justify-between items-end mb-3">
+                                 <h3 class="font-bold text-slate-800">2. เลือกชั้นที่ต้องการรายงาน</h3>
+                                 <div class="flex gap-3">
+                                     <button id="selectAllFloorsBtn" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">เลือกทั้งหมด</button>
+                                     <button id="deselectAllFloorsBtn" class="text-xs text-slate-500 hover:text-slate-700 font-medium">ล้างทั้งหมด</button>
                                  </div>
                              </div>
                               <div id="report-floor-list-container"></div>
                         </div>
-                        <div class="border-t pt-4">
-                             <h3 class="font-semibold px-2 mb-2">3. ตัวเลือกเพิ่มเติม</h3>
+
+                        <div class="h-px bg-slate-200 w-full"></div>
+
+                        <!-- Section 3 -->
+                        <div>
+                             <h3 class="font-bold text-slate-800 mb-3">3. ตัวเลือกเพิ่มเติม</h3>
                               <div id="report-options-container"></div>
                         </div>
                     </div>
                 `;
 
                 const outputHTML = `
-                    <div class="xl:col-span-2 flex flex-col xl:border-l xl:pl-4 min-h-0">
-                        <div class="flex flex-col gap-2">
-                            <div id="report-type-toggle" class="bg-slate-200 p-1 rounded-lg text-slate-800 text-sm font-semibold flex">
-                                <button id="toggle-simple-report" class="report-type-toggle-btn flex-1 px-3 py-2 rounded-md active">สร้างรายงาน</button>
-                                <button id="toggle-ai-report" class="report-type-toggle-btn flex-1 px-3 py-2 rounded-md">สร้างรายงานด้วย AI</button>
+                    <div class="xl:col-span-2 flex flex-col xl:border-l xl:border-slate-200 xl:pl-6 min-h-0">
+                        <div class="flex flex-col gap-4 h-full">
+                            <!-- Tabs -->
+                            <div id="report-type-toggle" class="bg-slate-100 p-1.5 rounded-xl text-slate-600 text-sm font-semibold flex shadow-inner border border-slate-200/60">
+                                <button id="toggle-simple-report" class="report-type-toggle-btn flex-1 px-4 py-2.5 rounded-lg active transition-all">สร้างรายงาน</button>
+                                <button id="toggle-ai-report" class="report-type-toggle-btn flex-1 px-4 py-2.5 rounded-lg transition-all">สร้างรายงานด้วย AI</button>
                             </div>
 
-                            <div id="simple-report-view">
-                                 <button id="generateRawReportBtn" class="w-full mt-2 px-4 py-3 bg-slate-500 text-white font-semibold rounded-lg hover:bg-slate-600 transition-colors">
+                            <!-- Simple Report View -->
+                            <div id="simple-report-view" class="flex flex-col gap-4">
+                                 <button id="generateRawReportBtn" class="w-full px-4 py-3 bg-slate-600 text-white font-bold rounded-xl hover:bg-slate-700 transition-colors shadow-sm">
                                      สร้าง
                                  </button>
                             </div>
-                            <div id="ai-report-view" class="hidden mt-2 bg-indigo-50 border border-indigo-200 rounded-lg p-3">
-                                <p class="font-semibold text-center text-indigo-800 mb-2">เลือกรูปแบบรายงาน AI</p>
-                                <div class="grid grid-cols-2 gap-2">
-                                     <button id="generateAITextBtn" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                                        แบบข้อความ
-                                     </button>
-                                     <button id="generateAIInfographicBtn" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                                        แบบ Infographic
-                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="relative flex-grow mt-4 min-h-0">
-                            <div id="ai-loading-overlay" class="absolute inset-0 items-center justify-center hidden rounded-lg">
-                                <div class="text-center p-4 bg-white/80 rounded-lg shadow-md">
-                                    <div class="spinner mx-auto"></div>
-                                    <p class="mt-2 font-semibold text-indigo-700">AI กำลังวิเคราะห์ข้อมูล...</p>
-                                </div>
-                            </div>
-                            <div id="report-output-container" class="w-full h-full border rounded-lg bg-slate-50 overflow-auto">
-                                <textarea id="ai-output-text" class="w-full h-full p-3 bg-transparent text-sm" placeholder="ผลลัพธ์จะแสดงที่นี่..."></textarea>
-                                <div id="ai-output-infographic" class="hidden p-4 bg-white"></div>
-                            </div>
-                        </div>
 
-                        <div id="report-actions" class="flex-shrink-0 flex gap-2 mt-2">
-                             <button id="copyReportBtn" class="flex-grow p-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors inline-flex items-center justify-center gap-2" title="คัดลอกสรุป">
-                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
-                                 <span>คัดลอก</span>
-                             </button>
-                             <button id="downloadInfographicBtn" class="flex-grow p-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors inline-flex items-center justify-center gap-2 hidden" title="ดาวน์โหลด Infographic">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
-                                <span>ดาวน์โหลด</span>
-                             </button>
+                            <!-- AI Report View -->
+                            <div id="ai-report-view" class="hidden flex-col gap-4">
+                                <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-4">
+                                    <p class="font-semibold text-center text-indigo-800 mb-3">เลือกรูปแบบรายงาน AI</p>
+                                    <div class="grid grid-cols-2 gap-3">
+                                         <button id="generateAITextBtn" class="w-full px-4 py-2.5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">
+                                            แบบข้อความ
+                                         </button>
+                                         <button id="generateAIInfographicBtn" class="w-full px-4 py-2.5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">
+                                            แบบ Infographic
+                                         </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Shared Output Area -->
+                            <div class="relative flex-grow min-h-0 border border-slate-200 rounded-xl bg-slate-50/50 shadow-inner overflow-hidden mt-2">
+                                <div id="ai-loading-overlay" class="absolute inset-0 items-center justify-center hidden bg-white/80 backdrop-blur-sm z-10">
+                                    <div class="text-center p-6 bg-white rounded-2xl shadow-xl border border-slate-100">
+                                        <div class="spinner mx-auto mb-4"></div>
+                                        <p class="font-bold text-indigo-700">AI กำลังวิเคราะห์ข้อมูล...</p>
+                                        <p class="text-xs text-slate-500 mt-1">กรุณารอสักครู่</p>
+                                    </div>
+                                </div>
+                                <textarea id="ai-output-text" class="w-full h-full p-4 bg-transparent text-sm text-slate-700 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500/20" placeholder="ผลลัพธ์จะแสดงที่นี่..."></textarea>
+                                <div id="ai-output-infographic" class="hidden p-4 bg-white h-full overflow-auto"></div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div id="report-actions" class="flex-shrink-0 flex gap-3 pt-2">
+                                 <button id="copyReportBtn" class="flex-grow py-3 px-4 bg-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-300 transition-colors inline-flex items-center justify-center gap-2" title="คัดลอกสรุป">
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                                     <span>คัดลอก</span>
+                                 </button>
+                                 <button id="downloadInfographicBtn" class="flex-grow py-3 px-4 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition-colors inline-flex items-center justify-center gap-2 hidden" title="ดาวน์โหลด Infographic">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+                                    <span>ดาวน์โหลด</span>
+                                 </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -2954,32 +3068,32 @@
             }
 
             function populateReportUI() {
-                 const checkIconSVG = `<svg class="icon w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>`;
-                 const dragIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2 flex-shrink-0"><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>`;
+                 const checkIconSVG = `<svg class="icon w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>`;
+                 const dragIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-300 mr-3 flex-shrink-0 cursor-grab active:cursor-grabbing hover:text-slate-500 transition-colors"><circle cx="9" cy="12" r="1.5"></circle><circle cx="9" cy="5" r="1.5"></circle><circle cx="9" cy="19" r="1.5"></circle><circle cx="15" cy="12" r="1.5"></circle><circle cx="15" cy="5" r="1.5"></circle><circle cx="15" cy="19" r="1.5"></circle></svg>`;
                 
                 const taskContainer = document.getElementById('report-task-list-container');
-                let tasksHTML = '<div class="task-list-sortable-container border rounded-lg p-2 space-y-1 max-h-[35vh] overflow-y-auto">';
+                let tasksHTML = '<div class="task-list-sortable-container space-y-2 max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">';
                 Object.keys(taskDefinitions).forEach(catKey => {
                     const catDef = taskDefinitions[catKey];
                     const mainCheckboxId = `report-main-task-${catKey}`;
                     tasksHTML += `
-                        <div class="report-main-task-container" draggable="true">
+                        <div class="report-main-task-container bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-shadow" draggable="true">
                             <input type="checkbox" id="${mainCheckboxId}" data-catkey="${catKey}" class="hidden report-main-task-checkbox">
-                            <label for="${mainCheckboxId}" class="report-selection-label font-semibold">
+                            <label for="${mainCheckboxId}" class="report-selection-label font-semibold text-slate-700 py-3 px-4 w-full flex items-center">
                                 ${dragIconSVG}
-                                <span class="box">${checkIconSVG}</span>
-                                <span>${catDef.reportEmoji} ${catDef.reportName}</span>
+                                <span class="box bg-white border-2 border-slate-300 rounded-md w-5 h-5 flex items-center justify-center mr-3 transition-colors">${checkIconSVG}</span>
+                                <span class="text-[15px]">${catDef.reportEmoji} ${catDef.reportName}</span>
                             </label>
-                            <div id="subtasks-${catKey}" class="hidden pl-12 space-y-1 mt-1">`;
+                            <div id="subtasks-${catKey}" class="hidden pl-14 pr-4 pb-3 space-y-1.5 mt-1 border-t border-slate-100 pt-2">`;
                     
                     if (catDef.type === 'progress' || catDef.type === 'multi-progress') {
                          catDef.tasks.forEach((task, index) => {
                              const id = `report-subtask-${catKey}-${index}`;
-                             tasksHTML += `<div><input type="checkbox" id="${id}" data-catkey="${catKey}" data-taskidx="${index}" class="hidden report-subtask-checkbox"><label for="${id}" class="report-selection-label text-sm"><span class="box">${checkIconSVG}</span><span>${task.name}</span></label></div>`;
+                             tasksHTML += `<div><input type="checkbox" id="${id}" data-catkey="${catKey}" data-taskidx="${index}" class="hidden report-subtask-checkbox"><label for="${id}" class="report-selection-label text-sm text-slate-600 py-1.5 px-2 rounded-lg hover:bg-slate-50 transition-colors w-full flex items-center"><span class="box bg-white border-2 border-slate-300 rounded w-4 h-4 flex items-center justify-center mr-3 transition-colors">${checkIconSVG}</span><span>${task.name}</span></label></div>`;
                          });
                     } else {
                         const id = `report-subtask-${catKey}-summary`;
-                        tasksHTML += `<div><input type="checkbox" id="${id}" data-catkey="${catKey}" data-taskidx="0" class="hidden report-subtask-checkbox"><label for="${id}" class="report-selection-label text-sm"><span class="box">${checkIconSVG}</span><span>สรุปผลตรวจ</span></label></div>`;
+                        tasksHTML += `<div><input type="checkbox" id="${id}" data-catkey="${catKey}" data-taskidx="0" class="hidden report-subtask-checkbox"><label for="${id}" class="report-selection-label text-sm text-slate-600 py-1.5 px-2 rounded-lg hover:bg-slate-50 transition-colors w-full flex items-center"><span class="box bg-white border-2 border-slate-300 rounded w-4 h-4 flex items-center justify-center mr-3 transition-colors">${checkIconSVG}</span><span>สรุปผลตรวจ</span></label></div>`;
                     }
 
                     tasksHTML += `</div></div>`;
@@ -2988,38 +3102,38 @@
                 taskContainer.innerHTML = tasksHTML;
 
                 const floorContainer = document.getElementById('report-floor-list-container');
-                let floorsHTML = '<div class="flex flex-wrap gap-2 p-2">';
+                let floorsHTML = '<div class="flex flex-wrap gap-2.5 px-1">';
                 CONFIG.FLOORS.slice().reverse().forEach(floor => {
                     const id = `report-floor-${floor}`;
-                    floorsHTML += `<div><input type="checkbox" id="${id}" value="${floor}" class="hidden report-floor-checkbox"><label for="${id}" class="floor-selector-btn">${floor}</label></div>`;
+                    floorsHTML += `<div><input type="checkbox" id="${id}" value="${floor}" class="hidden report-floor-checkbox"><label for="${id}" class="floor-selector-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600 transition-all shadow-sm w-10 h-10 rounded-full flex items-center justify-center font-medium">${floor}</label></div>`;
                 });
                 floorsHTML += '</div>';
                 floorContainer.innerHTML = floorsHTML;
                 
                 const optionsContainer = document.getElementById('report-options-container');
-                optionsContainer.innerHTML = `<div class="border rounded-lg p-3 space-y-2">
+                optionsContainer.innerHTML = `<div class="border border-slate-200 rounded-xl p-4 space-y-4 bg-white shadow-sm">
                     <div>
                         <input type="checkbox" id="report-include-summary" class="hidden">
-                        <label for="report-include-summary" class="report-selection-label">
-                            <span class="box">${checkIconSVG}</span>
+                        <label for="report-include-summary" class="report-selection-label text-slate-700 font-medium flex items-center cursor-pointer">
+                            <span class="box bg-white border-2 border-slate-300 rounded-md w-5 h-5 flex items-center justify-center mr-3 transition-colors">${checkIconSVG}</span>
                             <span>แสดงภาพรวมทั้งโครงการ</span>
                         </label>
                     </div>
-                    <div class="pt-2">
-                        <p class="text-sm font-medium text-gray-700 mb-1 px-1">รูปแบบรายงาน:</p>
-                        <div class="report-toggle-container flex w-full bg-slate-200 rounded-full p-1">
+                    <div class="pt-1">
+                        <p class="text-sm font-medium text-slate-500 mb-2 px-1">รูปแบบรายงาน:</p>
+                        <div class="report-toggle-container flex w-full bg-slate-100 rounded-xl p-1.5 shadow-inner border border-slate-200/60">
                             <input type="radio" id="report-type-short" name="report-type" value="short" class="hidden">
-                            <label for="report-type-short" class="flex-1 text-center py-1 rounded-full cursor-pointer transition-colors">แบบสั้น</label>
+                            <label for="report-type-short" class="flex-1 text-center py-2 rounded-lg cursor-pointer transition-all text-sm font-medium text-slate-600">แบบสั้น</label>
                             <input type="radio" id="report-type-long" name="report-type" value="long" class="hidden" checked>
-                            <label for="report-type-long" class="flex-1 text-center py-1 rounded-full cursor-pointer transition-colors">แบบยาว</label>
+                            <label for="report-type-long" class="flex-1 text-center py-2 rounded-lg cursor-pointer transition-all text-sm font-medium text-slate-600">แบบยาว</label>
                         </div>
                     </div>
-                    <div id="room-summary-option-container" class="border-t pt-3 mt-3 hidden">
-                         <h4 class="font-semibold mb-2">สรุปคะแนนรายห้อง</h4>
+                    <div id="room-summary-option-container" class="border-t border-slate-100 pt-4 mt-2 hidden">
+                         <h4 class="font-semibold text-slate-800 mb-3">สรุปคะแนนรายห้อง</h4>
                          <div>
                              <input type="checkbox" id="report-room-summary" class="hidden">
-                             <label for="report-room-summary" class="report-selection-label">
-                                  <span class="box">${checkIconSVG}</span><span>แนบสรุปคะแนน (รวมทุกผลตรวจ)</span>
+                             <label for="report-room-summary" class="report-selection-label text-slate-700 font-medium flex items-center cursor-pointer">
+                                  <span class="box bg-white border-2 border-slate-300 rounded-md w-5 h-5 flex items-center justify-center mr-3 transition-colors">${checkIconSVG}</span><span>แนบสรุปคะแนน (รวมทุกผลตรวจ)</span>
                              </label>
                          </div>
                     </div>
