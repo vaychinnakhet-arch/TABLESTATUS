@@ -65,10 +65,40 @@
             transform: translateY(-50%);
             width: auto !important;
             z-index: 20;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+        }
+        .is-line-capturing #header-date-container > div {
+            display: flex !important;
+            align-items: center !important;
+        }
+        .is-line-capturing #header-date-container svg {
+            margin-bottom: 0 !important;
+            vertical-align: middle !important;
+        }
+        .is-line-capturing #header-date-container span {
+            line-height: 1 !important;
+            vertical-align: middle !important;
+            display: inline-flex !important;
+            align-items: center !important;
         }
         .is-line-capturing .floor-separator {
             border-top-width: 4px !important;
             border-top-color: #cbd5e1 !important; /* slate-300 */
+        }
+        .is-line-capturing th, .is-line-capturing td {
+            vertical-align: middle !important;
+        }
+        .is-line-capturing #legend > div {
+            display: flex !important;
+            align-items: center !important;
+        }
+        .is-line-capturing #legend span {
+            line-height: 1 !important;
+            vertical-align: middle !important;
+            display: inline-flex !important;
+            align-items: center !important;
         }
 
         .table-cell {
