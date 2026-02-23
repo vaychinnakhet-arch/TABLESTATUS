@@ -1512,7 +1512,7 @@
                     let cellText = '-';
                     if (unitData.inInspection) {
                         styleClasses = 'bg-yellow-400 text-black';
-                        cellText = 'ตรวจสอบ';
+                        cellText = 'รอคะแนน';
                     } else {
                         let scoreToShow = 0, defectToShow = false, stageLabel = '';
                         if (unitData.qcScore > 0 && unitData.qcScore === unitData.cmScore) {
@@ -1800,7 +1800,7 @@
                             if (isInspection) {
                                 if (unitData.inInspection) {
                                     styleClasses = 'bg-yellow-400 text-black';
-                                    cellText = 'ตรวจสอบ';
+                                    cellText = 'รอคะแนน';
                                 } else {
                                     let scoreToShow = 0, defectToShow = false, stageLabel = '';
                                     if (unitData.qcScore > 0 && unitData.qcScore === unitData.cmScore) {
@@ -2194,7 +2194,7 @@
                 // Helper for standard badges
                 const createBadge = (colorClass, text, iconHtml = '') => {
                     return `
-                        <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm transition-transform hover:scale-105 flex-shrink-0">
+                        <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-black shadow-sm transition-transform hover:scale-105 flex-shrink-0">
                             ${iconHtml ? iconHtml : `<div class="w-3 h-3 rounded-full ${colorClass} ring-2 ring-slate-50"></div>`}
                             <span class="text-slate-600 font-medium text-xs md:text-sm whitespace-nowrap">${text}</span>
                         </div>
@@ -2222,7 +2222,7 @@
 
                 // Logic to populate content
                 if (currentView === 'qcSummary') {
-                     content.innerHTML += createBadge('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
+                     content.innerHTML += createBadge('bg-yellow-400', 'รอคะแนน');
                      content.innerHTML += createBadge('bg-teal-500', 'ผ่าน (>= 85)');
                      content.innerHTML += createBadge('bg-rose-500', 'ไม่ผ่าน (< 85)');
                      content.innerHTML += createBadge('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-[10px] border border-rose-200">!</div>');
@@ -2238,7 +2238,7 @@
                     });
                     content.innerHTML += createBadge('bg-emerald-500', 'เสร็จสมบูรณ์ (100%)');
                 } else if (categoryDef.type === 'inspection') {
-                    content.innerHTML += createBadge('bg-yellow-400', 'อยู่ระหว่างตรวจสอบ');
+                    content.innerHTML += createBadge('bg-yellow-400', 'รอคะแนน');
                     content.innerHTML += createBadge('bg-teal-500', 'ผ่าน (>= 85)');
                     content.innerHTML += createBadge('bg-rose-500', 'ไม่ผ่าน (< 85)');
                     content.innerHTML += createBadge('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-[10px] border border-rose-200">!</div>');
@@ -2247,7 +2247,7 @@
                     content.innerHTML += createBadge('bg-sky-300', 'คืบหน้า (31-60%)');
                     content.innerHTML += createBadge('bg-sky-500', 'คืบหน้ามาก (61-99%)');
                     content.innerHTML += createBadge('bg-emerald-500', 'เสร็จสมบูรณ์ (100%)');
-                    content.innerHTML += createBadge('', 'แสดงงานย่อยที่เริ่มทำแล้ว', '<div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-300">ย่อ</div>');
+                    content.innerHTML += createBadge('', 'แสดงงานย่อยที่เริ่มทำแล้ว', '<div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-black">ย่อ</div>');
                 } else {
                     // Sequential flow
                     categoryDef.tasks.forEach((task, index) => {
