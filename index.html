@@ -125,6 +125,24 @@
         .table-cell:hover {
             z-index: 10;
         }
+        /* Force table borders to be black */
+        #main-table th, #main-table td {
+            border-color: #000000 !important;
+        }
+        .separator-cell {
+            width: 8px !important;
+            min-width: 8px !important;
+            max-width: 8px !important;
+            padding: 0 !important;
+            background-color: #cbd5e1 !important; /* slate-300 */
+            border-left: 1px solid #64748b !important; /* slate-500 */
+            border-right: 1px solid #64748b !important;
+            border-top: 1px solid #cbd5e1 !important;
+            border-bottom: 1px solid #cbd5e1 !important;
+        }
+        .floor-separator {
+            border-top-color: #000000 !important;
+        }
         .selection-active {
             background-color: rgba(59, 130, 246, 0.4) !important;
             outline: 2px solid #3B82F6;
@@ -136,10 +154,7 @@
         .summary-cell {
             background-color: #f8fafc; /* slate-50 */
         }
-        .separator-cell {
-            border-right-width: 4px;
-            border-color: #e2e8f0; /* slate-200 */
-        }
+
         .custom-file-button {
             cursor: pointer;
         }
@@ -1471,7 +1486,7 @@
                         <th class="border p-2 bg-slate-200" rowspan="2"><span>ชั้น</span></th>
                         <th class="border p-2 bg-slate-200" rowspan="2"><span>รายการ</span></th>
                         <th class="border p-2 bg-slate-200" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
-                        <th class="border-y border-l bg-white separator-cell" rowspan="2"></th>
+                        <th class="border-y separator-cell" rowspan="2"></th>
                         <th class="border p-2 bg-slate-200" colspan="3"><span>สรุปผลตรวจ</span></th>
                     </tr>
                     <tr>`;
@@ -1602,7 +1617,7 @@
                     }
 
                     // Add Separator and Summary Columns
-                    wetWorkRow.innerHTML += `<td class="border-l-2 border-slate-300 bg-white separator-cell" rowspan="2"></td>`;
+                    wetWorkRow.innerHTML += `<td class="border-y separator-cell" rowspan="2"></td>`;
                     
                     // Summary for Wet Work
                     wetWorkRow.innerHTML += `
@@ -1638,7 +1653,7 @@
                         <td class="border p-2 align-middle" rowspan="2"><span>TOTAL</span></td>
                         <td class="border p-1 font-semibold bg-slate-100 text-slate-600 text-xs align-middle">Wet Work</td>
                         <td class="border" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>( ${CONFIG.TOTAL_UNITS} UNIT )</span></td>
-                        <td class="border-y border-l bg-white separator-cell" rowspan="2"></td>
+                        <td class="border-y separator-cell" rowspan="2"></td>
                         <td class="border p-2 bg-slate-100"><span>${totals.wetWork.submitted}</span></td>
                         <td class="border p-2 bg-teal-100"><span>${totals.wetWork.passed}</span></td>
                         <td class="border p-2 bg-rose-100"><span>${totals.wetWork.failed}</span></td>
@@ -1671,7 +1686,7 @@
                         <th class="border p-2 bg-slate-200" rowspan="2"><span>ชั้น</span></th>
                         <th class="border p-2 bg-slate-200" rowspan="2" style="min-width: 100px;"><span>รายการ</span></th>
                         <th class="border p-2 bg-slate-200" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
-                        <th class="border-y border-l bg-white separator-cell" rowspan="2"></th>
+                        <th class="border-y separator-cell" rowspan="2"></th>
                         <th class="border p-2 bg-slate-200" rowspan="2"><span>จำนวน</span></th>
                         <th class="border p-2 bg-teal-200" rowspan="2"><span>เสร็จ</span></th>
                         <th class="border p-2 bg-rose-200" rowspan="2"><span>คงเหลือ</span></th>
@@ -1685,7 +1700,7 @@
                     headerHTML = `<tr>
                         <th class="border p-2 bg-slate-200" rowspan="2"><span>ชั้น</span></th>
                         <th class="border p-2 bg-slate-200" colspan="${CONFIG.ROOMS_PER_FLOOR}"><span>ROOM No.</span></th>
-                        <th class="border-y border-l bg-white separator-cell" rowspan="2"></th>
+                        <th class="border-y separator-cell" rowspan="2"></th>
                         <th class="border p-2 bg-slate-200" colspan="${isInspection ? 3 : categoryTasks.length}"><span>${isInspection ? 'สรุปผลตรวจ' : 'จำนวน'}</span></th>
                         <th class="border p-2 bg-teal-200" rowspan="2"><span>ผ่าน/เสร็จ</span></th>
                         <th class="border p-2 bg-rose-200" rowspan="2"><span>คงเหลือ</span></th>
@@ -1752,7 +1767,7 @@
                             }
 
                             if (taskIndex === 0) {
-                                row.innerHTML += `<td class="border-y border-l bg-white separator-cell" rowspan="${detailedTasks.length}"></td>`;
+                                row.innerHTML += `<td class="border-y separator-cell" rowspan="${detailedTasks.length}"></td>`;
                                 let floorTaskCountsHTML = '<div class="flex flex-col p-1 space-y-0.5 text-xs text-left">';
                                 detailedTasks.forEach((task, index) => {
                                     let startedCount = 0;
@@ -1859,7 +1874,7 @@
                             cell.dataset.room = room;
                             row.appendChild(cell);
                         }
-                        row.innerHTML += `<td class="border-y border-l bg-white separator-cell"></td>`;
+                        row.innerHTML += `<td class="border-y separator-cell"></td>`;
                         let floorCompleted = 0;
                         if (isInspection) {
                             let floorSubmitted = 0, floorPassed = 0, floorFailed = 0;
@@ -1941,7 +1956,7 @@
                     let footerHTML = `<tr class="font-bold bg-slate-200">
                         <td class="border p-2" colspan="2"><span>TOTAL ( ${CONFIG.TOTAL_UNITS} UNIT )</span></td>
                         <td class="border" colspan="${CONFIG.ROOMS_PER_FLOOR}"></td>
-                        <td class="border-y border-l bg-white separator-cell"></td>
+                        <td class="border-y separator-cell"></td>
                         <td class="border p-0 bg-slate-100 align-top"><span>${summaryHTML}</span></td>
                         <td class="border p-2 bg-teal-100"><span>${totalCompleted}</span></td>
                         <td class="border p-2 bg-rose-100"><span>${totalRemaining}</span></td>
@@ -1951,7 +1966,7 @@
                     const totalRemaining = CONFIG.TOTAL_UNITS - totalCompleted;
                     let footerHTML = `<tr class="font-bold bg-slate-200">
                         <td class="border p-2" colspan="${CONFIG.ROOMS_PER_FLOOR + 1}"><span>TOTAL ( ${CONFIG.TOTAL_UNITS} UNIT )</span></td>
-                        <td class="border-y border-l bg-white separator-cell"></td>`;
+                        <td class="border-y separator-cell"></td>`;
                     totals.forEach((total, index) => {
                         let bgColor = 'bg-slate-100';
                         if (isInspection) {
@@ -2158,7 +2173,7 @@
                 const legend = document.getElementById('legend');
                 
                 // Single line layout
-                legend.className = 'mt-4 p-3 bg-white border border-slate-200 shadow-sm rounded-xl flex items-center gap-4 text-sm font-medium text-slate-700 overflow-x-auto';
+                legend.className = 'mt-4 p-3 bg-white border border-black shadow-sm rounded-xl flex items-center gap-4 text-sm font-medium text-slate-700 overflow-x-auto';
                 legend.innerHTML = '';
                 
                 // Label
@@ -2190,14 +2205,14 @@
                 const createStep = (colorClass, text, number, isLast = false) => {
                     return `
                         <div class="flex items-center group flex-shrink-0">
-                            <div class="flex items-center gap-2 bg-white pl-2 pr-3 py-1.5 rounded-full border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-indigo-100">
+                            <div class="flex items-center gap-2 bg-white pl-2 pr-3 py-1.5 rounded-full border border-black shadow-sm transition-all hover:shadow-md hover:border-indigo-100">
                                 <div class="w-5 h-5 rounded-full ${colorClass} flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-1 ring-white legend-number-circle">
                                     ${number}
                                 </div>
                                 <span class="text-slate-700 font-medium text-xs md:text-sm whitespace-nowrap">${text}</span>
                             </div>
                             ${!isLast ? `
-                                <div class="mx-2 text-slate-300 group-hover:text-indigo-300 transition-colors">
+                                <div class="mx-2 text-black group-hover:text-indigo-300 transition-colors">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                                 </div>
                             ` : ''}
