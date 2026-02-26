@@ -110,14 +110,16 @@
             align-items: center !important;
         }
         .is-line-capturing #legend span {
-            line-height: 20px !important;
+            line-height: 1 !important;
             vertical-align: middle !important;
             display: inline-block !important;
+            margin-top: 2px !important;
         }
         .is-line-capturing .legend-number-circle {
-            display: inline-block !important;
-            line-height: 20px !important;
-            text-align: center !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: normal !important;
             padding: 0 !important;
         }
 
@@ -2224,14 +2226,11 @@
                 };
 
                 const createToggleBadge = () => {
-                    const borderClass = showMajorDefectHighlight ? 'border-yellow-400 ring-1 ring-yellow-400 bg-yellow-50' : 'border-black';
+                    const borderClass = showMajorDefectHighlight ? 'border-yellow-400 ring-2 ring-yellow-400 bg-yellow-50' : 'border-black';
                     return `
                         <button onclick="toggleMajorDefectHighlight()" class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border ${borderClass} shadow-sm transition-transform hover:scale-105 flex-shrink-0 cursor-pointer">
                             <div class="w-4 h-4 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-[10px] border border-rose-200">!</div>
                             <span class="text-slate-600 font-medium text-xs md:text-sm whitespace-nowrap">พบ Major Defect</span>
-                            <div class="w-8 h-4 bg-slate-200 rounded-full relative transition-colors ${showMajorDefectHighlight ? 'bg-green-500' : ''}">
-                                <div class="w-4 h-4 bg-white rounded-full shadow absolute top-0 transition-transform ${showMajorDefectHighlight ? 'translate-x-4' : 'translate-x-0'}"></div>
-                            </div>
                         </button>
                     `;
                 };
