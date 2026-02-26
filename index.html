@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- SUPABASE SDK -->
@@ -110,10 +111,10 @@
             align-items: center !important;
         }
         .is-line-capturing #legend span {
-            line-height: 1 !important;
+            line-height: normal !important;
             vertical-align: middle !important;
             display: inline-block !important;
-            margin-top: 2px !important;
+            margin-top: 0 !important;
         }
         .is-line-capturing .legend-number-circle {
             display: inline-flex !important;
@@ -122,6 +123,9 @@
             line-height: normal !important;
             padding: 0 !important;
         }
+        .is-line-capturing #exitCaptureModeFloatingBtn {
+            display: flex !important;
+        }
 
         .table-cell {
             transition: background-color 0.2s ease-in-out;
@@ -129,7 +133,7 @@
             position: relative;
             user-select: none;
         }
-        .table-cell:hover {
+        .table-cell:hover, .table-cell.selection-active {
             z-index: 10;
         }
         /* Force table borders to be black */
@@ -681,6 +685,10 @@
                     <button id="captureBtn" class="action-btn px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                         แคปเจอร์
+                    </button>
+                    <button id="toggleCaptureModeBtn" class="action-btn px-4 py-2 bg-white border border-indigo-200 text-indigo-700 rounded-lg shadow-sm hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        ดูแบบแคปเจอร์
                     </button>
                     <button id="openReportModalBtn" class="action-btn px-4 py-2 bg-white border border-indigo-200 text-indigo-700 rounded-lg shadow-sm hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium inline-flex items-center gap-2 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
@@ -2952,7 +2960,7 @@
                     const height = captureArea.scrollHeight;
 
                     html2canvas(captureArea, {
-                        scale: 2,
+                        scale: 3, // Increased quality
                         useCORS: true,
                         backgroundColor: '#ffffff',
                         width: width,
@@ -2972,7 +2980,219 @@
                         captureBtn.innerHTML = originalBtnHTML;
                         captureBtn.disabled = false;
                     });
-                }, 200); 
+                }, 500); // Increased timeout to ensure rendering
+            }
+
+            function generatePDFReport() {
+                const selections = getReportSelections();
+                const { orderedTaskKeys, tasks, floors } = selections;
+
+                if (orderedTaskKeys.length === 0 || floors.length === 0) {
+                    showNotificationModal('ข้อมูลไม่เพียงพอ', "กรุณาเลือก 'งาน' และ 'ชั้น' ที่ต้องการสร้าง PDF");
+                    return;
+                }
+
+                const orientation = document.querySelector('input[name="pdf-orientation"]:checked').value;
+                const isLandscape = orientation === 'landscape';
+                
+                // A4 size in pixels (at 96 DPI approx)
+                // Landscape: 1123px width, Portrait: 794px width
+                // We use a higher scale for quality, but the container width defines the layout.
+                const pageWidth = isLandscape ? 1400 : 1000; // Slightly larger for better fit
+                
+                // Create a temporary container for PDF generation
+                let pdfContainer = document.getElementById('pdf-generation-container');
+                if (!pdfContainer) {
+                    pdfContainer = document.createElement('div');
+                    pdfContainer.id = 'pdf-generation-container';
+                    pdfContainer.style.position = 'absolute';
+                    pdfContainer.style.top = '-9999px';
+                    pdfContainer.style.left = '-9999px';
+                    pdfContainer.style.width = `${pageWidth}px`;
+                    pdfContainer.style.backgroundColor = '#ffffff';
+                    pdfContainer.style.padding = '40px';
+                    document.body.appendChild(pdfContainer);
+                }
+                pdfContainer.innerHTML = ''; // Clear previous content
+
+                // Header
+                const today = new Date();
+                const dateString = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear() + 543}`;
+                
+                const headerHTML = `
+                    <div class="mb-8 text-center">
+                        <h1 class="text-3xl font-bold text-slate-800 mb-2">รายงานความคืบหน้าโครงการ Vay Chinnakhet</h1>
+                        <p class="text-lg text-slate-600">ประจำวันที่: ${dateString}</p>
+                    </div>
+                `;
+                pdfContainer.innerHTML += headerHTML;
+
+                // Render Tables for each category
+                orderedTaskKeys.forEach(catKey => {
+                    const catDef = taskDefinitions[catKey];
+                    if (!tasks[catKey] || tasks[catKey].length === 0) return;
+
+                    const categoryTitle = `
+                        <div class="mb-4 mt-8 break-inside-avoid">
+                            <h2 class="text-xl font-bold text-white bg-slate-800 px-4 py-2 rounded-lg inline-block">
+                                ${catDef.reportEmoji} ${catDef.reportName}
+                            </h2>
+                        </div>
+                    `;
+                    pdfContainer.innerHTML += categoryTitle;
+
+                    // Create Table
+                    const table = document.createElement('table');
+                    table.className = 'w-full border-collapse border border-slate-300 text-sm mb-8 break-inside-avoid shadow-sm';
+                    
+                    // Table Header
+                    let theadHTML = '<thead class="bg-slate-100 text-slate-700">';
+                    theadHTML += '<tr>';
+                    theadHTML += '<th class="border border-slate-300 p-2 w-16 text-center">ชั้น</th>';
+                    theadHTML += `<th class="border border-slate-300 p-2 text-center" colspan="${CONFIG.ROOMS_PER_FLOOR}">ROOM No.</th>`;
+                    theadHTML += '<th class="border border-slate-300 p-2 w-24 text-center">สรุป</th>';
+                    theadHTML += '</tr>';
+                    
+                    // Room Numbers Row
+                    theadHTML += '<tr>';
+                    theadHTML += '<th class="border border-slate-300 p-1"></th>'; // Empty for floor
+                    for (let i = 1; i <= CONFIG.ROOMS_PER_FLOOR; i++) {
+                        theadHTML += `<th class="border border-slate-300 p-1 text-center text-xs text-slate-500">${i}</th>`;
+                    }
+                    theadHTML += '<th class="border border-slate-300 p-1"></th>'; // Empty for summary
+                    theadHTML += '</tr></thead>';
+                    table.innerHTML = theadHTML;
+
+                    // Table Body
+                    const tbody = document.createElement('tbody');
+                    floors.forEach(floor => {
+                        const roomsOnThisFloor = (floor === 2) ? CONFIG.ROOMS_ON_FLOOR_2 : CONFIG.ROOMS_PER_FLOOR;
+                        
+                        // For each selected subtask in this category
+                        tasks[catKey].forEach(taskIndex => {
+                            const task = catDef.tasks[taskIndex];
+                            const row = document.createElement('tr');
+                            
+                            // Floor Cell
+                            row.innerHTML += `<td class="border border-slate-300 p-2 font-bold text-center bg-slate-50">${floor}</td>`;
+                            
+                            let completedCount = 0;
+                            
+                            // Room Cells
+                            for (let room = 1; room <= CONFIG.ROOMS_PER_FLOOR; room++) {
+                                if (floor === 2 && room > CONFIG.ROOMS_ON_FLOOR_2) {
+                                    row.innerHTML += `<td class="border border-slate-300 p-1 bg-slate-100"></td>`;
+                                    continue;
+                                }
+                                
+                                const unitData = projectData[catKey]?.[floor]?.[room] || {};
+                                let cellContent = '';
+                                let cellClass = 'bg-white';
+                                
+                                if (catDef.type === 'inspection') {
+                                    const score = unitData.qcScore || unitData.cmScore || 0;
+                                    const isDefect = unitData.qcHasMajorDefect || unitData.cmHasMajorDefect;
+                                    if (score > 0) {
+                                        if (score >= 85) {
+                                            cellClass = isDefect ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'; // Pass but defect vs Pass Clean
+                                            cellContent = isDefect ? '!' : '✓';
+                                            completedCount++;
+                                        } else {
+                                            cellClass = 'bg-red-100 text-red-800';
+                                            cellContent = '✗';
+                                        }
+                                    }
+                                } else if (catDef.type === 'multi-progress') {
+                                    const progress = unitData[`progress_${task.key}`] || 0;
+                                    if (progress >= 100) {
+                                        cellClass = 'bg-green-500 text-white';
+                                        cellContent = '100%';
+                                        completedCount++;
+                                    } else if (progress > 0) {
+                                        cellClass = 'bg-blue-100 text-blue-800';
+                                        cellContent = `${progress}%`;
+                                    }
+                                } else {
+                                    // Sequential
+                                    const currentTaskIndex = unitData.taskIndex || 0;
+                                    const progress = unitData.progress || 0;
+                                    
+                                    if (currentTaskIndex > taskIndex || (currentTaskIndex === taskIndex && progress >= 100)) {
+                                        cellClass = 'bg-green-500 text-white';
+                                        cellContent = '100%';
+                                        completedCount++;
+                                    } else if (currentTaskIndex === taskIndex && progress > 0) {
+                                        cellClass = 'bg-blue-100 text-blue-800';
+                                        cellContent = `${progress}%`;
+                                    }
+                                }
+                                
+                                row.innerHTML += `<td class="border border-slate-300 p-1 text-center text-[10px] ${cellClass}">${cellContent}</td>`;
+                            }
+                            
+                            // Summary Cell
+                            const totalRooms = roomsOnThisFloor;
+                            const percent = Math.round((completedCount / totalRooms) * 100);
+                            row.innerHTML += `<td class="border border-slate-300 p-2 text-center font-bold text-slate-700">${percent}%</td>`;
+                            
+                            tbody.appendChild(row);
+                        });
+                    });
+                    table.appendChild(tbody);
+                    pdfContainer.appendChild(table);
+                });
+
+                // Generate PDF
+                const btn = document.getElementById('generatePDFReportBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = 'กำลังสร้าง PDF...';
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    html2canvas(pdfContainer, {
+                        scale: 2, // High quality
+                        useCORS: true,
+                        backgroundColor: '#ffffff'
+                    }).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png');
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF(isLandscape ? 'l' : 'p', 'mm', 'a4');
+                        
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = pdf.internal.pageSize.getHeight();
+                        
+                        const imgProps = pdf.getImageProperties(imgData);
+                        const imgWidth = pdfWidth;
+                        const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                        
+                        // Handle multi-page if height exceeds page height
+                        if (imgHeight > pdfHeight) {
+                            let heightLeft = imgHeight;
+                            let position = 0;
+                            
+                            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                            heightLeft -= pdfHeight;
+                            
+                            while (heightLeft >= 0) {
+                                position = heightLeft - imgHeight;
+                                pdf.addPage();
+                                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                                heightLeft -= pdfHeight;
+                            }
+                        } else {
+                            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                        }
+                        
+                        pdf.save(`report-${Date.now()}.pdf`);
+                    }).catch(err => {
+                        console.error("PDF Generation Error:", err);
+                        showNotificationModal('เกิดข้อผิดพลาด', 'ไม่สามารถสร้าง PDF ได้');
+                    }).finally(() => {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                        // Clean up container? No, keep it for debugging or next use, it's hidden.
+                    });
+                }, 500);
             }
             
             // --- AI & REPORTING FUNCTIONS ---
@@ -3029,6 +3249,7 @@
                             <div id="report-type-toggle" class="bg-slate-100 p-1.5 rounded-xl text-slate-600 text-sm font-semibold flex shadow-inner border border-slate-200/60">
                                 <button id="toggle-simple-report" class="report-type-toggle-btn flex-1 px-4 py-2.5 rounded-lg active transition-all">สร้างรายงาน</button>
                                 <button id="toggle-ai-report" class="report-type-toggle-btn flex-1 px-4 py-2.5 rounded-lg transition-all">สร้างรายงานด้วย AI</button>
+                                <button id="toggle-pdf-report" class="report-type-toggle-btn flex-1 px-4 py-2.5 rounded-lg transition-all">PDF Report</button>
                             </div>
 
                             <!-- Simple Report View -->
@@ -3049,6 +3270,29 @@
                                          <button id="generateAIInfographicBtn" class="w-full px-4 py-2.5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">
                                             แบบ Infographic
                                          </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PDF Report View -->
+                            <div id="pdf-report-view" class="hidden flex-col gap-4">
+                                <div class="bg-rose-50/50 border border-rose-100 rounded-xl p-4">
+                                    <p class="font-semibold text-center text-rose-800 mb-3">ตั้งค่า PDF</p>
+                                    <div class="flex flex-col gap-3">
+                                        <div class="flex items-center justify-center gap-4">
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="pdf-orientation" value="portrait" class="text-rose-600 focus:ring-rose-500">
+                                                <span class="text-sm font-medium text-slate-700">แนวตั้ง (Portrait)</span>
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="pdf-orientation" value="landscape" checked class="text-rose-600 focus:ring-rose-500">
+                                                <span class="text-sm font-medium text-slate-700">แนวนอน (Landscape)</span>
+                                            </label>
+                                        </div>
+                                        <button id="generatePDFReportBtn" class="w-full px-4 py-2.5 bg-rose-600 text-white font-semibold rounded-lg hover:bg-rose-700 transition-colors shadow-sm flex items-center justify-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                            สร้าง PDF Report
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -3091,27 +3335,45 @@
                 // Main Toggles
                 const simpleToggle = document.getElementById('toggle-simple-report');
                 const aiToggle = document.getElementById('toggle-ai-report');
+                const pdfToggle = document.getElementById('toggle-pdf-report');
+                
                 const simpleView = document.getElementById('simple-report-view');
                 const aiView = document.getElementById('ai-report-view');
+                const pdfView = document.getElementById('pdf-report-view');
 
-                simpleToggle.addEventListener('click', () => {
-                    simpleToggle.classList.add('active');
-                    aiToggle.classList.remove('active');
-                    simpleView.classList.remove('hidden');
-                    aiView.classList.add('hidden');
-                });
-
-                aiToggle.addEventListener('click', () => {
-                    aiToggle.classList.add('active');
+                function setActiveView(viewName) {
+                    // Reset all
                     simpleToggle.classList.remove('active');
-                    aiView.classList.remove('hidden');
+                    aiToggle.classList.remove('active');
+                    pdfToggle.classList.remove('active');
+                    
                     simpleView.classList.add('hidden');
-                });
+                    aiView.classList.add('hidden');
+                    pdfView.classList.add('hidden');
+
+                    // Set active
+                    if (viewName === 'simple') {
+                        simpleToggle.classList.add('active');
+                        simpleView.classList.remove('hidden');
+                    } else if (viewName === 'ai') {
+                        aiToggle.classList.add('active');
+                        aiView.classList.remove('hidden');
+                    } else if (viewName === 'pdf') {
+                        pdfToggle.classList.add('active');
+                        pdfView.classList.remove('hidden');
+                        pdfView.classList.add('flex'); // Ensure flex display
+                    }
+                }
+
+                simpleToggle.addEventListener('click', () => setActiveView('simple'));
+                aiToggle.addEventListener('click', () => setActiveView('ai'));
+                pdfToggle.addEventListener('click', () => setActiveView('pdf'));
 
                 // Action Buttons
                 document.getElementById('generateRawReportBtn')?.addEventListener('click', handleGenerateRawReport);
                 document.getElementById('generateAITextBtn')?.addEventListener('click', handleGenerateAITextReport);
                 document.getElementById('generateAIInfographicBtn')?.addEventListener('click', handleGenerateAIInfographic);
+                document.getElementById('generatePDFReportBtn')?.addEventListener('click', generatePDFReport);
                 document.getElementById('copyReportBtn')?.addEventListener('click', () => copyToClipboard('ai-output-text', 'copyReportBtn'));
                 document.getElementById('downloadInfographicBtn')?.addEventListener('click', () => downloadInfographic('ai-output-infographic', 'downloadInfographicBtn'));
             }
@@ -3484,7 +3746,7 @@
                 runAIAnalysis(request, (jsonText) => {
                     try {
                         const aiData = JSON.parse(jsonText);
-                        renderResidentialInfographic(aiData.infographicData);
+                        renderInfographic(aiData.infographicData);
                     } catch (e) {
                         console.error("Failed to parse AI JSON response:", e);
                         switchToTextView();
@@ -3795,7 +4057,7 @@
                     </div>`;
             }
 
-            function renderResidentialInfographic(data) {
+            function renderInfographic(data) {
                 const container = document.getElementById('ai-output-infographic');
                 if (!data) {
                     container.innerHTML = `<p class="text-center text-gray-500">ไม่พบข้อมูลสำหรับสร้าง Infographic</p>`;
@@ -4042,6 +4304,12 @@
                 document.getElementById('exportDataBtn').addEventListener('click', exportData);
                 document.getElementById('import-file').addEventListener('change', importData);
                 document.getElementById('captureBtn').addEventListener('click', captureForLine);
+                document.getElementById('toggleCaptureModeBtn').addEventListener('click', () => {
+                    document.body.classList.add('is-line-capturing');
+                });
+                document.getElementById('exitCaptureModeFloatingBtn').addEventListener('click', () => {
+                    document.body.classList.remove('is-line-capturing');
+                });
                 document.getElementById('openReportModalBtn').addEventListener('click', e => setupAndOpenReportModal(e.currentTarget));
                 document.getElementById('openCommonAreaReportModalBtn').addEventListener('click', e => setupAndOpenCommonAreaReportModal(e.currentTarget));
                 document.getElementById('closeReportModalBtn').addEventListener('click', () => closeModal('reportModal'));
@@ -4194,5 +4462,11 @@
         });
     </script>
 <script type="module" src="/index.tsx"></script>
+    <!-- Exit Capture Mode Floating Button -->
+    <button id="exitCaptureModeFloatingBtn" class="fixed bottom-6 right-6 z-50 px-6 py-3 bg-rose-600 text-white font-bold rounded-full shadow-2xl hover:bg-rose-700 focus:outline-none focus:ring-4 focus:ring-rose-500/50 transition-all transform hover:scale-105 hidden items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        ออกโหมดแคปเจอร์
+    </button>
+
 </body>
 </html>
