@@ -100,6 +100,11 @@
             padding-left: 0.75rem !important;
             padding-right: 0.75rem !important;
         }
+        .major-defect-highlight {
+            box-shadow: inset 0 0 0 3px #FACC15 !important; /* yellow-400 */
+            position: relative;
+            z-index: 10;
+        }
         .is-line-capturing #legend > div {
             display: flex !important;
             align-items: center !important;
@@ -950,6 +955,7 @@
             let currentView = 'residential';
             let currentCategory = 'skimAndPaint';
             let currentDetailedView = 'summary';
+            let showMajorDefectHighlight = false;
             let currentQuickUpdateRoom = { floor: null, room: null };
             let isSelecting = false;
             let selectedCells = new Set();
@@ -1531,7 +1537,12 @@
                         if (scoreToShow > 0) {
                             styleClasses = scoreToShow >= 85 ? 'bg-teal-500 text-white' : 'bg-rose-500 text-white';
                             cellText = `${stageLabel}${Number.isInteger(scoreToShow) ? scoreToShow : scoreToShow.toFixed(2)}`;
-                            if (defectToShow) cellText += '!';
+                            if (defectToShow) {
+                                cellText += '!';
+                                if (showMajorDefectHighlight) {
+                                    styleClasses += ' major-defect-highlight';
+                                }
+                            }
                         }
                     }
                     return { styleClasses, cellText };
@@ -1819,7 +1830,12 @@
                                     if (scoreToShow > 0) {
                                         styleClasses = scoreToShow >= 85 ? 'bg-teal-500 text-white' : 'bg-rose-500 text-white';
                                         cellText = `${stageLabel}${Number.isInteger(scoreToShow) ? scoreToShow : scoreToShow.toFixed(2)}`;
-                                        if (defectToShow) cellText += '!';
+                                        if (defectToShow) {
+                                            cellText += '!';
+                                            if (showMajorDefectHighlight) {
+                                                styleClasses += ' major-defect-highlight';
+                                            }
+                                        }
                                     } else {
                                         styleClasses = 'bg-slate-50 text-slate-400';
                                         cellText = '-';
@@ -2169,6 +2185,12 @@
                 }
             }
             
+            window.toggleMajorDefectHighlight = function() {
+                showMajorDefectHighlight = !showMajorDefectHighlight;
+                updateLegend();
+                renderTable();
+            }
+
             function updateLegend() {
                 const legend = document.getElementById('legend');
                 
@@ -2201,6 +2223,19 @@
                     `;
                 };
 
+                const createToggleBadge = () => {
+                    const borderClass = showMajorDefectHighlight ? 'border-yellow-400 ring-1 ring-yellow-400 bg-yellow-50' : 'border-black';
+                    return `
+                        <button onclick="toggleMajorDefectHighlight()" class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border ${borderClass} shadow-sm transition-transform hover:scale-105 flex-shrink-0 cursor-pointer">
+                            <div class="w-4 h-4 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-[10px] border border-rose-200">!</div>
+                            <span class="text-slate-600 font-medium text-xs md:text-sm whitespace-nowrap">พบ Major Defect</span>
+                            <div class="w-8 h-4 bg-slate-200 rounded-full relative transition-colors ${showMajorDefectHighlight ? 'bg-green-500' : ''}">
+                                <div class="w-4 h-4 bg-white rounded-full shadow absolute top-0 transition-transform ${showMajorDefectHighlight ? 'translate-x-4' : 'translate-x-0'}"></div>
+                            </div>
+                        </button>
+                    `;
+                };
+
                 // Helper for sequential steps
                 const createStep = (colorClass, text, number, isLast = false) => {
                     return `
@@ -2225,7 +2260,7 @@
                      content.innerHTML += createBadge('bg-yellow-400', 'รอคะแนน');
                      content.innerHTML += createBadge('bg-teal-500', 'ผ่าน (>= 85)');
                      content.innerHTML += createBadge('bg-rose-500', 'ไม่ผ่าน (< 85)');
-                     content.innerHTML += createBadge('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-[10px] border border-rose-200">!</div>');
+                     content.innerHTML += createToggleBadge();
                      return;
                 }
                 
@@ -2241,7 +2276,7 @@
                     content.innerHTML += createBadge('bg-yellow-400', 'รอคะแนน');
                     content.innerHTML += createBadge('bg-teal-500', 'ผ่าน (>= 85)');
                     content.innerHTML += createBadge('bg-rose-500', 'ไม่ผ่าน (< 85)');
-                    content.innerHTML += createBadge('', 'พบ Major Defect', '<div class="w-4 h-4 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-[10px] border border-rose-200">!</div>');
+                    content.innerHTML += createToggleBadge();
                 } else if (categoryDef.type === 'multi-progress') {
                     content.innerHTML += createBadge('bg-sky-100', 'เริ่มดำเนินการ (1-30%)');
                     content.innerHTML += createBadge('bg-sky-300', 'คืบหน้า (31-60%)');
